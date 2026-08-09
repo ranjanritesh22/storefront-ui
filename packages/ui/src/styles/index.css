@@ -1,6 +1,6 @@
 @import "./layers.css";
 @import "tailwindcss";
-@import "@storefront/tokens/styles.css" layer(theme);
+@import "@storefront/tokens/tokens.css" layer(theme);
 
 @layer ui-components {
   /* Component styles land here as components are added under src/components/*. */

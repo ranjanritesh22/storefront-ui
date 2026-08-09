@@ -1,0 +1,25 @@
+/**
+ * Dark theme — overrides tier-2 semantic tokens only, scoped to
+ * [data-theme="dark"]. Tier-1 primitives are shared with tokens.css (loaded
+ * first) and referenced here, never redefined.
+ *
+ * Usage: <html data-theme="dark"> (or any ancestor element) after importing
+ * both "@storefront/tokens/tokens.css" and this file.
+ */
+
+[data-theme="dark"] {
+  --ui-color-surface: var(--ui-gray-950);
+  --ui-color-surface-raised: var(--ui-gray-900);
+  --ui-color-foreground: var(--ui-gray-50);
+  --ui-color-foreground-muted: var(--ui-gray-400);
+  --ui-color-primary: var(--ui-blue-500);
+  --ui-color-primary-fg: var(--ui-gray-950);
+  --ui-color-border: var(--ui-gray-800);
+  --ui-color-ring: var(--ui-blue-400);
+  --ui-color-danger: var(--ui-red-500);
+  --ui-color-danger-fg: var(--ui-gray-950);
+  --ui-color-success: var(--ui-green-500);
+  --ui-color-success-fg: var(--ui-gray-950);
+  --ui-color-warning: var(--ui-amber-400);
+  --ui-color-warning-fg: var(--ui-gray-950);
+}

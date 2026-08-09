@@ -1,0 +1,22 @@
+/**
+ * Example brand theme — "Acme". Demonstrates a rebrand: tier-2 tokens only,
+ * scoped to [data-brand="acme"]. No tier-1 primitive, no component, and no
+ * file outside this one changes for a rebrand (ARCHITECTURE.md §4.1).
+ *
+ * This is a worked example for consumers to copy, not a token this package
+ * depends on elsewhere — hence the literal oklch values instead of aliasing
+ * @storefront/tokens' own blue/gray ramp, exactly as a real consumer's
+ * override file would look.
+ *
+ * Usage: <html data-brand="acme"> after importing
+ * "@storefront/tokens/tokens.css" and this file.
+ */
+
+[data-brand="acme"] {
+  --ui-color-primary: oklch(0.68 0.19 45);
+  --ui-color-primary-fg: oklch(1 0 0);
+  --ui-color-ring: oklch(0.72 0.17 45);
+  --ui-color-border: oklch(0.88 0.03 45);
+  --ui-color-surface-raised: oklch(0.98 0.01 45);
+  --ui-color-foreground-muted: oklch(0.5 0.02 45);
+}

@@ -11,12 +11,22 @@
     "dist"
   ],
   "exports": {
-    "./styles.css": "./dist/index.css"
+    ".": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./dist/tokens.js"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./themes/dark.css": "./dist/themes/dark.css",
+    "./themes/acme.css": "./dist/themes/acme.css"
+  },
+  "devDependencies": {
+    "@storefront/tsconfig": "workspace:*",
+    "typescript": "^5.9.3"
   },
   "scripts": {
     "build": "node build.mjs",
     "dev": "node build.mjs --watch",
-    "typecheck": "echo 'no TypeScript in @storefront/tokens — nothing to typecheck'",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "echo 'no tests in @storefront/tokens yet'",
     "lint": "echo 'no lint config for @storefront/tokens yet'",
     "clean": "rm -rf dist"

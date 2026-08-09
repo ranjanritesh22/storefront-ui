@@ -1,0 +1,193 @@
+/**
+ * @storefront/tokens
+ *
+ * Tier 1: primitives — raw palette + scales. Rarely referenced directly by
+ * components; exist so tier 2 has something to alias and so a rebrand has a
+ * full ramp to draw from.
+ * Tier 2: semantic — what @storefront/ui components actually consume.
+ *
+ * Consumers override tier-2 variables on `:root` (rebrand) or scope overrides
+ * under `[data-theme="..."]` / `[data-brand="..."]` (see ARCHITECTURE.md §4.1
+ * and themes/dark.css, themes/acme.css for worked examples).
+ *
+ * Spacing, radius, font, type, shadow, z-index and motion scales are consumed
+ * directly by components (their step names — e.g. --ui-radius-md — are
+ * already semantic; only colour gets a separate aliasing tier, per §4.1/§8).
+ */
+
+:root {
+  /* ---------------------------------------------------------------------
+   * Tier 1 — colour primitives (oklch)
+   * ------------------------------------------------------------------- */
+
+  /* neutral */
+  --ui-gray-0: oklch(1 0 0);
+  --ui-gray-50: oklch(0.985 0 0);
+  --ui-gray-100: oklch(0.967 0 0);
+  --ui-gray-200: oklch(0.922 0 0);
+  --ui-gray-300: oklch(0.869 0 0);
+  --ui-gray-400: oklch(0.708 0 0);
+  --ui-gray-500: oklch(0.556 0 0);
+  --ui-gray-600: oklch(0.439 0 0);
+  --ui-gray-700: oklch(0.371 0 0);
+  --ui-gray-800: oklch(0.269 0 0);
+  --ui-gray-900: oklch(0.205 0 0);
+  --ui-gray-950: oklch(0.145 0 0);
+
+  /* brand */
+  --ui-blue-50: oklch(0.97 0.014 258);
+  --ui-blue-100: oklch(0.93 0.032 258);
+  --ui-blue-200: oklch(0.88 0.06 258);
+  --ui-blue-300: oklch(0.8 0.09 258);
+  --ui-blue-400: oklch(0.7 0.13 258);
+  --ui-blue-500: oklch(0.62 0.16 258);
+  --ui-blue-600: oklch(0.55 0.18 258);
+  --ui-blue-700: oklch(0.48 0.17 258);
+  --ui-blue-800: oklch(0.4 0.15 258);
+  --ui-blue-900: oklch(0.33 0.12 258);
+  --ui-blue-950: oklch(0.24 0.09 258);
+
+  /* status: danger */
+  --ui-red-50: oklch(0.97 0.02 27);
+  --ui-red-100: oklch(0.93 0.045 27);
+  --ui-red-200: oklch(0.87 0.08 27);
+  --ui-red-300: oklch(0.79 0.13 27);
+  --ui-red-400: oklch(0.7 0.18 27);
+  --ui-red-500: oklch(0.64 0.21 27);
+  --ui-red-600: oklch(0.58 0.22 27);
+  --ui-red-700: oklch(0.5 0.19 27);
+  --ui-red-800: oklch(0.42 0.16 27);
+  --ui-red-900: oklch(0.36 0.13 27);
+  --ui-red-950: oklch(0.25 0.09 27);
+
+  /* status: warning */
+  --ui-amber-50: oklch(0.98 0.02 95);
+  --ui-amber-100: oklch(0.95 0.05 95);
+  --ui-amber-200: oklch(0.9 0.09 95);
+  --ui-amber-300: oklch(0.84 0.13 90);
+  --ui-amber-400: oklch(0.77 0.16 85);
+  --ui-amber-500: oklch(0.7 0.17 75);
+  --ui-amber-600: oklch(0.63 0.17 65);
+  --ui-amber-700: oklch(0.55 0.15 58);
+  --ui-amber-800: oklch(0.46 0.13 52);
+  --ui-amber-900: oklch(0.39 0.11 48);
+  --ui-amber-950: oklch(0.27 0.08 45);
+
+  /* status: success */
+  --ui-green-50: oklch(0.97 0.02 155);
+  --ui-green-100: oklch(0.93 0.045 155);
+  --ui-green-200: oklch(0.87 0.08 150);
+  --ui-green-300: oklch(0.79 0.12 148);
+  --ui-green-400: oklch(0.7 0.15 145);
+  --ui-green-500: oklch(0.62 0.17 143);
+  --ui-green-600: oklch(0.54 0.16 142);
+  --ui-green-700: oklch(0.46 0.14 142);
+  --ui-green-800: oklch(0.39 0.11 142);
+  --ui-green-900: oklch(0.33 0.09 142);
+  --ui-green-950: oklch(0.22 0.06 142);
+
+  /* ---------------------------------------------------------------------
+   * Tier 1 — spacing scale
+   * ------------------------------------------------------------------- */
+  --ui-space-0: 0rem;
+  --ui-space-1: 0.25rem;
+  --ui-space-2: 0.5rem;
+  --ui-space-3: 0.75rem;
+  --ui-space-4: 1rem;
+  --ui-space-5: 1.25rem;
+  --ui-space-6: 1.5rem;
+  --ui-space-8: 2rem;
+  --ui-space-10: 2.5rem;
+  --ui-space-12: 3rem;
+  --ui-space-16: 4rem;
+  --ui-space-20: 5rem;
+  --ui-space-24: 6rem;
+
+  /* ---------------------------------------------------------------------
+   * Tier 1 — radius scale
+   * ------------------------------------------------------------------- */
+  --ui-radius-none: 0rem;
+  --ui-radius-sm: 0.25rem;
+  --ui-radius-md: 0.5rem;
+  --ui-radius-lg: 0.75rem;
+  --ui-radius-xl: 1rem;
+  --ui-radius-2xl: 1.5rem;
+  --ui-radius-full: 9999px;
+
+  /* ---------------------------------------------------------------------
+   * Tier 1 — font stacks
+   * ------------------------------------------------------------------- */
+  --ui-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ui-font-serif: ui-serif, Georgia, "Times New Roman", serif;
+  --ui-font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* ---------------------------------------------------------------------
+   * Tier 1 — type scale (font-size / line-height pairs)
+   * ------------------------------------------------------------------- */
+  --ui-font-size-xs: 0.75rem;
+  --ui-line-height-xs: 1rem;
+  --ui-font-size-sm: 0.875rem;
+  --ui-line-height-sm: 1.25rem;
+  --ui-font-size-base: 1rem;
+  --ui-line-height-base: 1.5rem;
+  --ui-font-size-lg: 1.125rem;
+  --ui-line-height-lg: 1.75rem;
+  --ui-font-size-xl: 1.25rem;
+  --ui-line-height-xl: 1.75rem;
+  --ui-font-size-2xl: 1.5rem;
+  --ui-line-height-2xl: 2rem;
+  --ui-font-size-3xl: 1.875rem;
+  --ui-line-height-3xl: 2.25rem;
+  --ui-font-size-4xl: 2.25rem;
+  --ui-line-height-4xl: 2.5rem;
+  --ui-font-size-5xl: 3rem;
+  --ui-line-height-5xl: 1;
+
+  /* ---------------------------------------------------------------------
+   * Tier 1 — shadow scale
+   * ------------------------------------------------------------------- */
+  --ui-shadow-sm: 0 1px 2px oklch(0 0 0 / 0.05);
+  --ui-shadow-md: 0 1px 3px oklch(0 0 0 / 0.1), 0 1px 2px oklch(0 0 0 / 0.06);
+  --ui-shadow-lg: 0 4px 6px oklch(0 0 0 / 0.1), 0 2px 4px oklch(0 0 0 / 0.06);
+  --ui-shadow-xl: 0 10px 15px oklch(0 0 0 / 0.1), 0 4px 6px oklch(0 0 0 / 0.05);
+
+  /* ---------------------------------------------------------------------
+   * Tier 1 — z-index scale
+   * ------------------------------------------------------------------- */
+  --ui-z-dropdown: 1000;
+  --ui-z-sticky: 1100;
+  --ui-z-overlay: 1200;
+  --ui-z-modal: 1300;
+  --ui-z-popover: 1400;
+  --ui-z-toast: 1500;
+
+  /* ---------------------------------------------------------------------
+   * Tier 1 — motion
+   * ------------------------------------------------------------------- */
+  --ui-duration-fast: 100ms;
+  --ui-duration-base: 200ms;
+  --ui-duration-slow: 300ms;
+  --ui-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ui-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ui-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ui-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ---------------------------------------------------------------------
+   * Tier 2 — semantic colour tokens (default / light)
+   * These are the only colour variables components should ever reference.
+   * ------------------------------------------------------------------- */
+  --ui-color-surface: var(--ui-gray-0);
+  --ui-color-surface-raised: var(--ui-gray-50);
+  --ui-color-foreground: var(--ui-gray-950);
+  --ui-color-foreground-muted: var(--ui-gray-500);
+  --ui-color-primary: var(--ui-blue-600);
+  --ui-color-primary-fg: var(--ui-gray-0);
+  --ui-color-border: var(--ui-gray-200);
+  --ui-color-ring: var(--ui-blue-500);
+  --ui-color-danger: var(--ui-red-600);
+  --ui-color-danger-fg: var(--ui-gray-0);
+  --ui-color-success: var(--ui-green-600);
+  --ui-color-success-fg: var(--ui-gray-0);
+  --ui-color-warning: var(--ui-amber-500);
+  --ui-color-warning-fg: var(--ui-gray-950);
+}
