@@ -4,7 +4,7 @@ import { Badge } from "./badge";
 const meta: Meta<typeof Badge> = {
   title: "Components/Badge",
   component: Badge,
-  tags: ["autodocs"],
+  // No "autodocs" tag: badge.mdx attaches a custom docs page via <Meta of={BadgeStories} />.
   parameters: {
     docs: {
       description: {
@@ -77,6 +77,70 @@ export const Sizes: Story = {
           Size {size}
         </Badge>
       ))}
+    </div>
+  ),
+};
+
+/**
+ * "Overriding this component" demo stories — same Badge, three override layers.
+ * Referenced by badge.mdx via <Canvas of={BadgeStories.OverrideXxx} />.
+ */
+export const OverrideTokens: Story = {
+  name: "1. Tokens — rebrand every badge at once",
+  render: (args) => (
+    <div className="flex flex-wrap items-start gap-6">
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">default</span>
+        <Badge {...args} />
+      </div>
+      <div data-brand="acme" className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">data-brand=&quot;acme&quot;</span>
+        <Badge {...args} />
+      </div>
+      <div data-theme="dark" className="flex flex-col items-start gap-2 rounded-md bg-surface p-3">
+        <span className="font-mono text-xs text-foreground-muted">data-theme=&quot;dark&quot;</span>
+        <Badge {...args} />
+      </div>
+    </div>
+  ),
+};
+
+export const OverrideClassName: Story = {
+  name: "3. className — tweak one instance",
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-6">
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">default</span>
+        <Badge {...args} />
+      </div>
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">
+          className=&quot;uppercase tracking-wide&quot;
+        </span>
+        <Badge {...args} className="uppercase tracking-wide">
+          Limited
+        </Badge>
+      </div>
+    </div>
+  ),
+};
+
+export const OverrideStructural: Story = {
+  name: "4. asChild — swap the rendered element",
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-6">
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">{"<span>"}</span>
+        <Badge {...args} />
+      </div>
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">
+          {'asChild -> <a href="/sale">'}
+        </span>
+        <Badge {...args} asChild variant="danger">
+          <a href="#sale">Sale</a>
+        </Badge>
+      </div>
     </div>
   ),
 };

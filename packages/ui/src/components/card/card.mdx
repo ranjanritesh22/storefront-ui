@@ -1,0 +1,42 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as CardStories from "./card.stories";
+
+<Meta of={CardStories} />
+
+# Card
+
+<Description of={CardStories} />
+
+<Canvas of={CardStories.Playground} />
+
+<Controls of={CardStories.Playground} />
+
+## Overriding this component
+
+The same `Card`, styled three different ways — cheapest override layer first. Full model:
+[docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every card at once
+
+Override `--ui-color-surface`, `--ui-color-border`, `--ui-shadow-md` on `:root` or scoped under
+`[data-theme]` / `[data-brand]`.
+
+<Canvas of={CardStories.OverrideTokens} />
+
+### 2. `cardVariants` — style something that isn't a `Card`
+
+`cardVariants` is exported publicly for applying Card's exact border/shadow treatment to a
+non-`Card` element.
+
+### 3. `className` — tweak one instance
+
+Merged last via `cn()` on every part, so it always wins on a conflicting utility.
+
+<Canvas of={CardStories.OverrideClassName} />
+
+### 4. `asChild` — swap the rendered element
+
+Every part (`Card`, `CardHeader`, `CardTitle`, ...) supports swapping its rendered element —
+here the whole card becomes a clickable `<a>` while keeping its layout and styling.
+
+<Canvas of={CardStories.OverrideStructural} />

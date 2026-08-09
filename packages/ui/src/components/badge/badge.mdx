@@ -1,0 +1,40 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as BadgeStories from "./badge.stories";
+
+<Meta of={BadgeStories} />
+
+# Badge
+
+<Description of={BadgeStories} />
+
+<Canvas of={BadgeStories.Playground} />
+
+<Controls of={BadgeStories.Playground} />
+
+## Overriding this component
+
+The same `Badge`, styled three different ways — cheapest override layer first. Full model:
+[docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every badge at once
+
+Override `--ui-color-primary`, `--ui-color-success`, `--ui-color-warning`, `--ui-color-danger`,
+`--ui-color-border` on `:root` or scoped under `[data-theme]` / `[data-brand]`.
+
+<Canvas of={BadgeStories.OverrideTokens} />
+
+### 2. `badgeVariants` — style something that isn't a `Badge`
+
+```tsx
+<a className={badgeVariants({ variant: "success" })}>In stock</a>
+```
+
+### 3. `className` — tweak one instance
+
+<Canvas of={BadgeStories.OverrideClassName} />
+
+### 4. `asChild` — swap the rendered element
+
+Renders as an anchor for a filter/promo tag while keeping Badge's styling.
+
+<Canvas of={BadgeStories.OverrideStructural} />

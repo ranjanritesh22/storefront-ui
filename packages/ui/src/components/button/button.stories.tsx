@@ -4,7 +4,8 @@ import { Button } from "./button";
 const meta: Meta<typeof Button> = {
   title: "Components/Button",
   component: Button,
-  tags: ["autodocs"],
+  // No "autodocs" tag: button.mdx attaches a custom docs page via <Meta of={ButtonStories} />,
+  // and Storybook 8 errors if a CSF file has both an attached docs page and the autodocs tag.
   parameters: {
     docs: {
       description: {
@@ -118,5 +119,69 @@ export const AsLink: Story = {
     <Button {...args} asChild>
       <a href="#cart">Go to cart</a>
     </Button>
+  ),
+};
+
+/**
+ * "Overriding this component" demo stories — same Button, three override layers.
+ * Referenced by button.mdx via <Canvas of={ButtonStories.OverrideXxx} />.
+ */
+export const OverrideTokens: Story = {
+  name: "1. Tokens — rebrand every button at once",
+  render: (args) => (
+    <div className="flex flex-wrap items-start gap-6">
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">default</span>
+        <Button {...args} />
+      </div>
+      <div data-brand="acme" className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">data-brand=&quot;acme&quot;</span>
+        <Button {...args} />
+      </div>
+      <div data-theme="dark" className="flex flex-col items-start gap-2 rounded-md bg-surface p-3">
+        <span className="font-mono text-xs text-foreground-muted">data-theme=&quot;dark&quot;</span>
+        <Button {...args} />
+      </div>
+    </div>
+  ),
+};
+
+export const OverrideClassName: Story = {
+  name: "3. className — tweak one instance",
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-6">
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">default</span>
+        <Button {...args} />
+      </div>
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">
+          className=&quot;rounded-full px-8&quot;
+        </span>
+        <Button {...args} className="rounded-full px-8">
+          Checkout
+        </Button>
+      </div>
+    </div>
+  ),
+};
+
+export const OverrideStructural: Story = {
+  name: "4. asChild — swap the rendered element",
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-6">
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">{"<button>"}</span>
+        <Button {...args} />
+      </div>
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">
+          {"asChild -> <a href=\"/cart\">"}
+        </span>
+        <Button {...args} asChild>
+          <a href="#cart">Go to cart</a>
+        </Button>
+      </div>
+    </div>
   ),
 };

@@ -1,0 +1,37 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as FormFieldStories from "./form-field.stories";
+
+<Meta of={FormFieldStories} />
+
+# FormField
+
+<Description of={FormFieldStories} />
+
+<Canvas of={FormFieldStories.Playground} />
+
+<Controls of={FormFieldStories.Playground} />
+
+## Overriding this component
+
+The same `FormField`, styled three different ways — cheapest override layer first. Full model:
+[docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every field at once
+
+`--ui-color-danger` drives the error text colour; override it (or the wider brand palette) on
+`:root` or scoped under `[data-theme]` / `[data-brand]`.
+
+<Canvas of={FormFieldStories.OverrideTokens} />
+
+### 2. `classNames` — reach a specific part
+
+A slot map (`root`, `label`, `control`, `hint`, `error`) since a single `className` can only
+reach the root.
+
+<Canvas of={FormFieldStories.OverrideClassNames} />
+
+### 3. `className` — shorthand for the root wrapper
+
+Merged last via `cn()`.
+
+<Canvas of={FormFieldStories.OverrideClassName} />

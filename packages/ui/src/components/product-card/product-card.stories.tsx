@@ -8,7 +8,8 @@ const PLACEHOLDER_IMAGE =
 const meta: Meta<typeof ProductCard> = {
   title: "Components/ProductCard",
   component: ProductCard,
-  tags: ["autodocs"],
+  // No "autodocs" tag: product-card.mdx attaches a custom docs page via
+  // <Meta of={ProductCardStories} />.
   parameters: {
     docs: {
       description: {
@@ -92,6 +93,87 @@ export const CustomBadgeSlot: Story = {
           Badge: (props) => <Badge {...props} variant="warning" size="sm" />,
         }}
       />
+    </div>
+  ),
+};
+
+/**
+ * "Overriding this component" demo stories — same ProductCard, three override layers.
+ * Referenced by product-card.mdx via <Canvas of={ProductCardStories.OverrideXxx} />.
+ */
+export const OverrideTokens: Story = {
+  name: "1. Tokens — rebrand every card at once",
+  render: (args) => (
+    <div className="flex flex-wrap items-start gap-6">
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">default</span>
+        <div className="w-56">
+          <ProductCard {...args} badgeLabel="Sale" />
+        </div>
+      </div>
+      <div data-brand="acme" className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">data-brand=&quot;acme&quot;</span>
+        <div className="w-56">
+          <ProductCard {...args} badgeLabel="Sale" />
+        </div>
+      </div>
+      <div data-theme="dark" className="flex flex-col items-start gap-2 rounded-md bg-surface p-3">
+        <span className="font-mono text-xs text-foreground-muted">data-theme=&quot;dark&quot;</span>
+        <div className="w-56">
+          <ProductCard {...args} badgeLabel="Sale" />
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const OverrideClassNames: Story = {
+  name: "3. classNames — reach a specific part",
+  render: (args) => (
+    <div className="flex flex-wrap items-start gap-6">
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">default</span>
+        <div className="w-56">
+          <ProductCard {...args} />
+        </div>
+      </div>
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">
+          {'classNames={{ price: "text-lg font-bold", cta: "rounded-full" }}'}
+        </span>
+        <div className="w-56">
+          <ProductCard
+            {...args}
+            classNames={{ price: "text-lg font-bold text-primary", cta: "rounded-full" }}
+          />
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const OverrideStructural: Story = {
+  name: "4. slots — replace one part, keep the rest",
+  render: (args) => (
+    <div className="flex flex-wrap items-start gap-6">
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">default Badge</span>
+        <div className="w-56">
+          <ProductCard {...args} badgeLabel="Limited" />
+        </div>
+      </div>
+      <div className="flex flex-col items-start gap-2">
+        <span className="font-mono text-xs text-foreground-muted">
+          {'slots={{ Badge: (props) => <Badge {...props} variant="warning" /> }}'}
+        </span>
+        <div className="w-56">
+          <ProductCard
+            {...args}
+            badgeLabel="Limited"
+            slots={{ Badge: (props) => <Badge {...props} variant="warning" size="sm" /> }}
+          />
+        </div>
+      </div>
     </div>
   ),
 };

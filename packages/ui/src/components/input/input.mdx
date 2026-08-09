@@ -1,0 +1,40 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as InputStories from "./input.stories";
+
+<Meta of={InputStories} />
+
+# Input
+
+<Description of={InputStories} />
+
+<Canvas of={InputStories.Playground} />
+
+<Controls of={InputStories.Playground} />
+
+## Overriding this component
+
+The same `Input`, styled three different ways — cheapest override layer first. Full model:
+[docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every input at once
+
+Override `--ui-color-border`, `--ui-color-danger`, `--ui-color-ring` on `:root` or scoped under
+`[data-theme]` / `[data-brand]`.
+
+<Canvas of={InputStories.OverrideTokens} />
+
+### 2. `inputVariants` — style something that isn't an `Input`
+
+`inputVariants` is exported publicly, so a `<textarea>` (or any element) can share Input's exact
+border, focus-ring, and sizing treatment.
+
+<Canvas of={InputStories.OverrideVariants} />
+
+### 3. `className` — tweak one instance
+
+Merged last via `cn()`, so it always wins on a conflicting utility.
+
+<Canvas of={InputStories.OverrideClassName} />
+
+Prefer `FormField` when you need a label, hint, or error wired up with correct
+`aria-describedby` / `aria-invalid` — see the [FormField docs](../form-field/form-field.mdx).

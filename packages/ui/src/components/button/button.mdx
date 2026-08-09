@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ButtonStories from "./button.stories";
+
+<Meta of={ButtonStories} />
+
+# Button
+
+<Description of={ButtonStories} />
+
+<Canvas of={ButtonStories.Playground} />
+
+<Controls of={ButtonStories.Playground} />
+
+## Overriding this component
+
+The same `Button`, styled three different ways — cheapest override layer first. Full model:
+[docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every button at once
+
+Override the semantic colour tokens Button consumes (`--ui-color-primary`, `--ui-color-danger`,
+`--ui-color-border`, `--ui-color-ring`, ...) on `:root` or scoped under `[data-theme]` /
+`[data-brand]`. No rebuild of this package required — the three buttons below are byte-identical
+component code, only the token scope around each one differs.
+
+<Canvas of={ButtonStories.OverrideTokens} />
+
+### 2. `buttonVariants` — style something that isn't a `Button`
+
+`buttonVariants` is exported publicly, so you can apply Button's exact styling to a raw element
+without importing `Button` itself:
+
+```tsx
+<a className={buttonVariants({ variant: "secondary" })} href="/cart">
+  Cart
+</a>
+```
+
+### 3. `className` — tweak one instance
+
+Passed through `cn()` last, so it always wins on a conflicting utility — no `!important` needed.
+
+<Canvas of={ButtonStories.OverrideClassName} />
+
+### 4. `asChild` — swap the rendered element
+
+Keeps Button's styling and behaviour while changing what actually renders — the standard way to
+make a "button" that's really a `next/link`.
+
+<Canvas of={ButtonStories.OverrideStructural} />
