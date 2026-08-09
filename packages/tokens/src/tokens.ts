@@ -179,6 +179,7 @@ export const colorTokens = {
   successFg: "--ui-color-success-fg",
   warning: "--ui-color-warning",
   warningFg: "--ui-color-warning-fg",
+  overlay: "--ui-color-overlay",
 } as const;
 
 /** Wraps a token name as a `var()` reference, e.g. `cssVar(colorTokens.primary)` → `"var(--ui-color-primary)"`. */

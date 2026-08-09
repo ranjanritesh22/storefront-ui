@@ -190,4 +190,5 @@
   --ui-color-success-fg: var(--ui-gray-0);
   --ui-color-warning: var(--ui-amber-500);
   --ui-color-warning-fg: var(--ui-gray-950);
+  --ui-color-overlay: oklch(0 0 0 / 0.5);
 }

@@ -29,6 +29,7 @@
   --color-success-fg: var(--ui-color-success-fg);
   --color-warning: var(--ui-color-warning);
   --color-warning-fg: var(--ui-color-warning-fg);
+  --color-overlay: var(--ui-color-overlay);
 
   --radius-none: var(--ui-radius-none);
   --radius-sm: var(--ui-radius-sm);
