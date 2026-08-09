@@ -1,3 +1,5 @@
 /* Consumer setup is exactly two imports — no Tailwind install required. */
 @import "@storefront/tokens/tokens.css";
 @import "@storefront/ui/styles.css";
+@import "@storefront/tokens/themes/dark.css";
+@import "@storefront/tokens/themes/acme.css";
