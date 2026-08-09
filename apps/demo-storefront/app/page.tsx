@@ -15,7 +15,11 @@ export default function Home() {
           <Link href="/buttons" className={styles.link}>
             the Button showcase
           </Link>{" "}
-          for the individual component in isolation.
+          for the individual component in isolation. Or see it all assembled into a real page at{" "}
+          <Link href="/plp" className={styles.link}>
+            the Men&apos;s Shoes PLP
+          </Link>
+          .
         </p>
       </header>
 

@@ -1,9 +1,23 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { ProductCard } from "./product-card";
 import { Badge } from "../badge/badge";
 
 const PLACEHOLDER_IMAGE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Crect width='400' height='400' fill='%23e5e5e5'/%3E%3C/svg%3E";
+
+function WishlistDemo(args: React.ComponentProps<typeof ProductCard>) {
+  const [wishlisted, setWishlisted] = useState(false);
+  return (
+    <div className="w-72">
+      <ProductCard
+        {...args}
+        wishlisted={wishlisted}
+        onWishlistToggle={() => setWishlisted((value) => !value)}
+      />
+    </div>
+  );
+}
 
 const meta: Meta<typeof ProductCard> = {
   title: "Components/ProductCard",
@@ -72,6 +86,17 @@ export const OnSaleWithBadge: Story = {
       <ProductCard {...args} />
     </div>
   ),
+};
+
+export const WithRatingAndWishlist: Story = {
+  args: {
+    subtitle: "Men's Shoes",
+    rating: 4.5,
+    ratingCount: 1234,
+    colorsCount: 2,
+    badgeLabel: "10% OFF",
+  },
+  render: (args) => <WishlistDemo {...args} />,
 };
 
 export const AsLinkCard: Story = {

@@ -1,0 +1,32 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as RatingStories from "./rating.stories";
+
+<Meta of={RatingStories} />
+
+# Rating
+
+<Description of={RatingStories} />
+
+<Canvas of={RatingStories.Playground} />
+
+<Controls of={RatingStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every rating at once
+
+<Canvas of={RatingStories.OverrideTokens} />
+
+### 2. `ratingVariants` — style something that isn't a `Rating`
+
+```tsx
+<span className={ratingVariants({ size: "sm" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<Rating value={4.5} classNames={{ count: "text-primary" }} />
+```

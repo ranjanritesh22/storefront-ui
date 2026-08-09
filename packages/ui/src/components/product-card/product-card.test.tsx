@@ -98,4 +98,63 @@ describe("ProductCard", () => {
     expect(screen.getByText("Mug").className).toContain("custom-title");
     expect(screen.getByRole("button", { name: "Add to cart" }).className).toContain("custom-cta");
   });
+
+  it("renders subtitle, rating, and colors count only when given", () => {
+    const { rerender } = render(
+      <ProductCard title="Mug" imageSrc="/img.jpg" imageAlt="Mug" price={9.99} />,
+    );
+    expect(screen.queryByRole("img", { name: /Rated/i })).not.toBeInTheDocument();
+
+    rerender(
+      <ProductCard
+        title="Mug"
+        subtitle="Men's Shoes"
+        imageSrc="/img.jpg"
+        imageAlt="Mug"
+        price={9.99}
+        rating={4.5}
+        ratingCount={1200}
+        colorsCount={2}
+      />,
+    );
+    expect(screen.getByText("Men's Shoes")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /Rated 4.5 out of 5 stars/i })).toBeInTheDocument();
+    expect(screen.getByText("2 colors")).toBeInTheDocument();
+  });
+
+  it("forwards priceFormatOptions to the Price slot", () => {
+    render(
+      <ProductCard
+        title="Shoe"
+        imageSrc="/img.jpg"
+        imageAlt="Shoe"
+        price={8995}
+        currency="INR"
+        locale="en-IN"
+        priceFormatOptions={{ maximumFractionDigits: 0 }}
+      />,
+    );
+    expect(screen.getByText("₹8,995")).toBeInTheDocument();
+  });
+
+  it("shows the wishlist toggle only when onWishlistToggle is given, and forwards clicks", async () => {
+    const user = userEvent.setup();
+    const onWishlistToggle = vi.fn();
+    const { rerender } = render(
+      <ProductCard title="Mug" imageSrc="/img.jpg" imageAlt="Mug" price={9.99} />,
+    );
+    expect(screen.queryByLabelText("Add to wishlist")).not.toBeInTheDocument();
+
+    rerender(
+      <ProductCard
+        title="Mug"
+        imageSrc="/img.jpg"
+        imageAlt="Mug"
+        price={9.99}
+        onWishlistToggle={onWishlistToggle}
+      />,
+    );
+    await user.click(screen.getByLabelText("Add to wishlist"));
+    expect(onWishlistToggle).toHaveBeenCalledTimes(1);
+  });
 });

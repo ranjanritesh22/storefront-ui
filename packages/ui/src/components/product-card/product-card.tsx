@@ -4,15 +4,20 @@ import { Card, CardContent, CardFooter } from "../card/card";
 import { Price, type PriceProps } from "../price/price";
 import { Badge, type BadgeProps } from "../badge/badge";
 import { Button, type ButtonProps } from "../button/button";
+import { Rating, type RatingProps } from "../rating/rating";
 import { productCardVariants, type ProductCardVariantsProps } from "./product-card.variants";
 
 export interface ProductCardClassNames {
   root?: string;
   image?: string;
   body?: string;
+  subtitle?: string;
   title?: string;
   price?: string;
   badge?: string;
+  rating?: string;
+  colors?: string;
+  wishlist?: string;
   cta?: string;
 }
 
@@ -27,6 +32,7 @@ export interface ProductCardSlots {
   Price?: React.ComponentType<PriceProps>;
   Badge?: React.ComponentType<BadgeProps>;
   Cta?: React.ComponentType<ButtonProps>;
+  Rating?: React.ComponentType<RatingProps>;
 }
 
 function DefaultProductImage({ src, alt, className }: ProductCardImageProps) {
@@ -37,6 +43,8 @@ export interface ProductCardProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
     ProductCardVariantsProps {
   title: string;
+  /** Muted line under the title, e.g. a category ("Men's Shoes"). */
+  subtitle?: React.ReactNode;
   imageSrc: string;
   imageAlt: string;
   /** In the currency's major unit, e.g. `19.99`. Forwarded to the `Price` slot. */
@@ -44,7 +52,18 @@ export interface ProductCardProps
   originalPrice?: number;
   currency?: string;
   locale?: string;
+  /** Forwarded to the `Price` slot's `formatOptions`, e.g. `{ maximumFractionDigits: 0 }`. */
+  priceFormatOptions?: Intl.NumberFormatOptions;
   badgeLabel?: string;
+  /** Out of 5. Omit to hide the rating row entirely. */
+  rating?: number;
+  ratingCount?: number;
+  /** Renders "N colors" under the price. Omit to hide. */
+  colorsCount?: number;
+  /** Presence of this callback is what shows the wishlist toggle. */
+  onWishlistToggle?: () => void;
+  wishlisted?: boolean;
+  wishlistLabel?: string;
   ctaLabel?: string;
   onCtaClick?: () => void;
   /** When given, the image and title link here; the CTA stays a separate action. */
@@ -54,6 +73,48 @@ export interface ProductCardProps
   slots?: ProductCardSlots;
 }
 
+function WishlistToggle({
+  wishlisted,
+  label,
+  className,
+  onClick,
+}: {
+  wishlisted: boolean;
+  label: string;
+  className?: string;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={wishlisted}
+      aria-label={label}
+      onClick={onClick}
+      className={cn(
+        "absolute end-3 top-3 flex size-8 items-center justify-center rounded-full border border-border bg-surface text-foreground-muted shadow-sm transition-colors duration-[var(--ui-duration-base)] ease-[var(--ui-ease-standard)] hover:text-danger",
+        "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
+        wishlisted && "text-danger",
+        className,
+      )}
+    >
+      <svg
+        viewBox="0 0 20 20"
+        fill={wishlisted ? "currentColor" : "none"}
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="size-4"
+        aria-hidden="true"
+      >
+        <path
+          d="M10 17s-6.5-4.06-6.5-8.5A3.5 3.5 0 0110 6a3.5 3.5 0 016.5 2.5C16.5 12.94 10 17 10 17z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
+}
+
 export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
   (
     {
@@ -61,13 +122,21 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       classNames,
       aspect,
       title,
+      subtitle,
       imageSrc,
       imageAlt,
       price,
       originalPrice,
       currency = "USD",
       locale = "en-US",
+      priceFormatOptions,
       badgeLabel,
+      rating,
+      ratingCount,
+      colorsCount,
+      onWishlistToggle,
+      wishlisted = false,
+      wishlistLabel,
       ctaLabel = "Add to cart",
       onCtaClick,
       href,
@@ -80,6 +149,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
     const PriceSlot = slots?.Price ?? Price;
     const BadgeSlot = slots?.Badge ?? Badge;
     const CtaSlot = slots?.Cta ?? Button;
+    const RatingSlot = slots?.Rating ?? Rating;
 
     const media = (
       <div className={cn(productCardVariants({ aspect }), classNames?.image)}>
@@ -88,6 +158,14 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
           <BadgeSlot variant="primary" className={cn("absolute start-3 top-3", classNames?.badge)}>
             {badgeLabel}
           </BadgeSlot>
+        ) : null}
+        {onWishlistToggle ? (
+          <WishlistToggle
+            wishlisted={wishlisted}
+            label={wishlistLabel ?? (wishlisted ? "Remove from wishlist" : "Add to wishlist")}
+            onClick={onWishlistToggle}
+            className={classNames?.wishlist}
+          />
         ) : null}
       </div>
     );
@@ -121,13 +199,27 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
               {title}
             </p>
           )}
+          {subtitle ? (
+            <p className={cn("-mt-1 font-sans text-xs text-foreground-muted", classNames?.subtitle)}>
+              {subtitle}
+            </p>
+          ) : null}
           <PriceSlot
             value={price}
             originalValue={originalPrice}
             currency={currency}
             locale={locale}
+            formatOptions={priceFormatOptions}
             className={classNames?.price}
           />
+          {typeof rating === "number" ? (
+            <RatingSlot value={rating} count={ratingCount} size="sm" className={classNames?.rating} />
+          ) : null}
+          {typeof colorsCount === "number" ? (
+            <p className={cn("font-sans text-xs text-foreground-muted", classNames?.colors)}>
+              {colorsCount} {colorsCount === 1 ? "color" : "colors"}
+            </p>
+          ) : null}
         </CardContent>
         <CardFooter className="p-4 pt-0">
           <CtaSlot fullWidth onClick={onCtaClick} className={classNames?.cta}>

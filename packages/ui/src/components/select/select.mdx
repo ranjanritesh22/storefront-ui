@@ -1,0 +1,32 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as SelectStories from "./select.stories";
+
+<Meta of={SelectStories} />
+
+# Select
+
+<Description of={SelectStories} />
+
+<Canvas of={SelectStories.Playground} />
+
+<Controls of={SelectStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every select at once
+
+<Canvas of={SelectStories.OverrideTokens} />
+
+### 2. `selectVariants` — style something that isn't a `Select`
+
+```tsx
+<select className={selectVariants({ size: "sm" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<Select classNames={{ icon: "hidden" }} />
+```

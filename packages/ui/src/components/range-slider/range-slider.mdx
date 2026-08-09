@@ -1,0 +1,38 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as RangeSliderStories from "./range-slider.stories";
+
+<Meta of={RangeSliderStories} />
+
+# RangeSlider
+
+<Description of={RangeSliderStories} />
+
+<Canvas of={RangeSliderStories.Playground} />
+
+<Controls of={RangeSliderStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every slider at once
+
+<Canvas of={RangeSliderStories.OverrideTokens} />
+
+### 2. `rangeSliderVariants` family — style something that isn't a `RangeSlider`
+
+```tsx
+<div className={rangeSliderTrackVariants({ size: "sm" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<RangeSlider classNames={{ range: "bg-danger" }} />
+```
+
+### 4. `useRangeSlider` — a fully custom UI
+
+```tsx
+const slider = useRangeSlider({ min: 0, max: 100 });
+```

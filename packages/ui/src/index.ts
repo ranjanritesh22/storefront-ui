@@ -7,6 +7,9 @@ export { Slot, Slottable } from "./lib/slot";
 export { useQuantity } from "./hooks/use-quantity";
 export type { UseQuantityOptions, UseQuantityResult } from "./hooks/use-quantity";
 
+export { useRangeSlider } from "./hooks/use-range-slider";
+export type { UseRangeSliderOptions, UseRangeSliderResult } from "./hooks/use-range-slider";
+
 export { Button, buttonVariants } from "./components/button";
 export type { ButtonProps, ButtonVariantsProps } from "./components/button";
 
@@ -81,3 +84,49 @@ export type {
   ProductCardImageProps,
   ProductCardVariantsProps,
 } from "./components/product-card";
+
+export { Checkbox, checkboxVariants, checkboxBoxVariants } from "./components/checkbox";
+export type {
+  CheckboxProps,
+  CheckboxClassNames,
+  CheckboxVariantsProps,
+} from "./components/checkbox";
+
+export { Select, selectVariants } from "./components/select";
+export type { SelectProps, SelectClassNames, SelectVariantsProps } from "./components/select";
+
+export { Rating, ratingVariants } from "./components/rating";
+export type { RatingProps, RatingClassNames, RatingVariantsProps } from "./components/rating";
+
+export {
+  RangeSlider,
+  rangeSliderVariants,
+  rangeSliderTrackVariants,
+  rangeSliderRangeVariants,
+  rangeSliderThumbVariants,
+} from "./components/range-slider";
+export type {
+  RangeSliderProps,
+  RangeSliderClassNames,
+  RangeSliderVariantsProps,
+} from "./components/range-slider";
+
+export { Breadcrumb, breadcrumbVariants } from "./components/breadcrumb";
+export type {
+  BreadcrumbProps,
+  BreadcrumbItem,
+  BreadcrumbClassNames,
+  BreadcrumbLinkProps,
+  BreadcrumbSlots,
+  BreadcrumbVariantsProps,
+} from "./components/breadcrumb";
+
+export { Pagination, getPaginationItems, paginationVariants } from "./components/pagination";
+export type {
+  PaginationProps,
+  PaginationClassNames,
+  PaginationItemValue,
+  PaginationLinkProps,
+  PaginationSlots,
+  PaginationVariantsProps,
+} from "./components/pagination";

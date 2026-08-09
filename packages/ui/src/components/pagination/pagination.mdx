@@ -1,0 +1,36 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as PaginationStories from "./pagination.stories";
+
+<Meta of={PaginationStories} />
+
+# Pagination
+
+<Description of={PaginationStories} />
+
+<Canvas of={PaginationStories.Playground} />
+
+<Controls of={PaginationStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every pagination at once
+
+<Canvas of={PaginationStories.OverrideTokens} />
+
+### 2. `paginationVariants` — style something that isn't a `Pagination`
+
+```tsx
+<ul className={paginationVariants({ size: "sm" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<Pagination page={page} totalPages={11} classNames={{ link: "rounded-full" }} />
+```
+
+### 4. `slots.Link` — render page numbers as links
+
+<Canvas of={PaginationStories.AsLinks} />

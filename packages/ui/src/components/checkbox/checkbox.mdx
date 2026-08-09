@@ -1,0 +1,35 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as CheckboxStories from "./checkbox.stories";
+
+<Meta of={CheckboxStories} />
+
+# Checkbox
+
+<Description of={CheckboxStories} />
+
+<Canvas of={CheckboxStories.Playground} />
+
+<Controls of={CheckboxStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every checkbox at once
+
+Override `--ui-color-primary`, `--ui-color-border` on `:root` or scoped under `[data-theme]` /
+`[data-brand]`.
+
+<Canvas of={CheckboxStories.OverrideTokens} />
+
+### 2. `checkboxVariants` / `checkboxBoxVariants` — style something that isn't a `Checkbox`
+
+```tsx
+<span className={checkboxBoxVariants({ size: "sm" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<Checkbox classNames={{ box: "rounded-full" }} label="Nike" />
+```

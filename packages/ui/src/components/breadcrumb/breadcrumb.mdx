@@ -1,0 +1,36 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as BreadcrumbStories from "./breadcrumb.stories";
+
+<Meta of={BreadcrumbStories} />
+
+# Breadcrumb
+
+<Description of={BreadcrumbStories} />
+
+<Canvas of={BreadcrumbStories.Playground} />
+
+<Controls of={BreadcrumbStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every breadcrumb at once
+
+<Canvas of={BreadcrumbStories.OverrideTokens} />
+
+### 2. `breadcrumbVariants` — style something that isn't a `Breadcrumb`
+
+```tsx
+<ol className={breadcrumbVariants({ size: "sm" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<Breadcrumb items={items} classNames={{ current: "text-primary" }} />
+```
+
+### 4. `slots.Link` — swap the rendered anchor
+
+<Canvas of={BreadcrumbStories.OverrideStructural} />
