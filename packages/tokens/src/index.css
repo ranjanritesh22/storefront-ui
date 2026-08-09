@@ -1,0 +1,29 @@
+/**
+ * @storefront/tokens
+ *
+ * Tier 1: primitives — raw palette, spacing, etc. Rarely referenced directly.
+ * Tier 2: semantic — what @storefront/ui components actually consume.
+ *
+ * Consumers override tier-2 variables on `:root` (rebrand) or scope overrides
+ * under `[data-theme="..."]` / `[data-brand="..."]` (see ARCHITECTURE.md §4.1).
+ * No component tokens live here yet — this is the empty foundation.
+ */
+
+:root {
+  /* tier 1: primitives */
+  --ui-blue-600: oklch(0.55 0.18 258);
+  --ui-gray-100: oklch(0.96 0 0);
+  --ui-gray-200: oklch(0.92 0 0);
+  --ui-red-600: oklch(0.58 0.22 27);
+
+  /* tier 2: semantic */
+  --ui-color-primary: var(--ui-blue-600);
+  --ui-color-primary-fg: white;
+  --ui-color-surface: white;
+  --ui-color-border: var(--ui-gray-200);
+  --ui-color-danger: var(--ui-red-600);
+  --ui-radius-md: 0.5rem;
+  --ui-space-4: 1rem;
+  --ui-font-sans: "Inter", system-ui, sans-serif;
+  --ui-shadow-card: 0 1px 3px oklch(0 0 0 / 0.1);
+}

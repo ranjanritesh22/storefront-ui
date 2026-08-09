@@ -1,0 +1,8 @@
+/**
+ * Cascade layer order — declared once, before anything else is imported.
+ * `ui-components` sits between Tailwind's `base` and `utilities` layers so
+ * component styles beat Tailwind's resets but always lose to a utility class
+ * (ours or the consumer's). Never reorder this line; never reach for
+ * `!important` to win a specificity fight instead (see ARCHITECTURE.md §4.3).
+ */
+@layer theme, base, ui-components, utilities;

@@ -1,0 +1,8 @@
+{
+  "extends": "@storefront/tsconfig/react-library.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "ESNext"
+  },
+  "include": [".storybook/**/*.ts", "stories/**/*.ts", "stories/**/*.tsx"]
+}
