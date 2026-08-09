@@ -3,3 +3,15 @@
 @import "@storefront/ui/styles.css";
 @import "@storefront/tokens/themes/dark.css";
 @import "@storefront/tokens/themes/acme.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--ui-color-surface);
+  color: var(--ui-color-foreground);
+}

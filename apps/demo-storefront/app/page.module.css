@@ -1,0 +1,35 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-8);
+  padding: var(--ui-space-8);
+  max-width: 90rem;
+  margin: 0 auto;
+  font-family: var(--ui-font-sans);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-2);
+  max-width: 56rem;
+}
+
+.heading {
+  margin: 0;
+  font-size: var(--ui-font-size-3xl);
+}
+
+.subheading {
+  margin: 0;
+  color: var(--ui-color-foreground-muted);
+}
+
+.subheading code {
+  font-family: var(--ui-font-mono);
+  color: var(--ui-color-foreground);
+}
+
+.link {
+  color: var(--ui-color-primary);
+}

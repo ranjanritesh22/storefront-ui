@@ -1,0 +1,318 @@
+/*
+ * Plain CSS Module — this app has no Tailwind toolchain (see app/page.tsx
+ * comment history / ARCHITECTURE.md §5 exports map). Layout only; all colour,
+ * spacing, radius and font values read @storefront/tokens custom properties,
+ * never literals, per CLAUDE.md hard rule #1.
+ *
+ * Being an unlayered stylesheet, every rule here beats the `ui-components`
+ * and `utilities` Tailwind layers shipped in @storefront/ui/styles.css by CSS
+ * cascade-layer rules — no !important needed (ARCHITECTURE.md §4.3/§5).
+ */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-8);
+}
+
+/* ---------------------------------------------------------------------
+ * Live toggle
+ * ------------------------------------------------------------------- */
+
+.toggleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ui-space-4);
+  padding: var(--ui-space-4);
+  background: var(--ui-color-surface-raised);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-lg);
+}
+
+.toggleLabel {
+  color: var(--ui-color-foreground-muted);
+  font-size: var(--ui-font-size-sm);
+}
+
+.toggleLabel code {
+  font-family: var(--ui-font-mono);
+  color: var(--ui-color-foreground);
+}
+
+/* ---------------------------------------------------------------------
+ * Three-theme grid
+ * ------------------------------------------------------------------- */
+
+.themeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ui-space-4);
+}
+
+@media (max-width: 960px) {
+  .themeGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-5);
+  background: var(--ui-color-surface);
+  color: var(--ui-color-foreground);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-lg);
+  padding: var(--ui-space-4);
+}
+
+.panelHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-1);
+  padding-bottom: var(--ui-space-3);
+  border-bottom: 1px solid var(--ui-color-border);
+}
+
+.panelTitle {
+  font-size: var(--ui-font-size-base);
+  font-weight: 600;
+}
+
+.panelAttr {
+  font-family: var(--ui-font-mono);
+  font-size: var(--ui-font-size-xs);
+  color: var(--ui-color-foreground-muted);
+}
+
+.panelBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-5);
+}
+
+.sectionLabel {
+  margin: 0 0 var(--ui-space-2) 0;
+  font-size: var(--ui-font-size-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ui-color-foreground-muted);
+}
+
+/* ---------------------------------------------------------------------
+ * PLP grid
+ * ------------------------------------------------------------------- */
+
+.plpGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ui-space-3);
+}
+
+/* ---------------------------------------------------------------------
+ * Compact PDP
+ * ------------------------------------------------------------------- */
+
+.pdpCard {
+  display: flex;
+  flex-direction: row;
+  gap: var(--ui-space-4);
+  padding: var(--ui-space-4);
+}
+
+@media (max-width: 480px) {
+  .pdpCard {
+    flex-direction: column;
+  }
+}
+
+.pdpMedia {
+  flex: 0 0 auto;
+  width: 7rem;
+}
+
+.pdpImage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: var(--ui-color-surface-raised);
+  border-radius: var(--ui-radius-md);
+}
+
+.pdpBody {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--ui-space-1);
+  padding: 0;
+}
+
+.pdpBrand {
+  margin: 0;
+  font-size: var(--ui-font-size-xs);
+  color: var(--ui-color-foreground-muted);
+}
+
+.pdpTitle {
+  margin: 0;
+  font-size: var(--ui-font-size-base);
+  font-weight: 600;
+  line-height: var(--ui-line-height-base);
+}
+
+.pdpPriceRow {
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-2);
+  margin-top: var(--ui-space-1);
+}
+
+.pdpDescription {
+  margin: var(--ui-space-1) 0 0 0;
+  font-size: var(--ui-font-size-sm);
+  color: var(--ui-color-foreground-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pdpActions {
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-2);
+  margin-top: var(--ui-space-2);
+}
+
+.pdpActions > :last-child {
+  flex: 1 1 auto;
+}
+
+/* ---------------------------------------------------------------------
+ * Override-layers panel
+ * ------------------------------------------------------------------- */
+
+.overridesSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-1);
+}
+
+.sectionHeading {
+  margin: 0;
+  font-size: var(--ui-font-size-xl);
+}
+
+.sectionSubheading {
+  margin: 0 0 var(--ui-space-4) 0;
+  color: var(--ui-color-foreground-muted);
+  font-size: var(--ui-font-size-sm);
+}
+
+.sectionSubheading code {
+  font-family: var(--ui-font-mono);
+}
+
+.overridesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--ui-space-4);
+}
+
+@media (max-width: 960px) {
+  .overridesGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .overridesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.overrideCell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-space-2);
+}
+
+.overrideLabel {
+  font-family: var(--ui-font-mono);
+  font-size: var(--ui-font-size-xs);
+  font-weight: 600;
+  color: var(--ui-color-primary);
+}
+
+/* Layer 3 — className: restyle the ProductCard root, unlayered so it wins
+   over the card's own `rounded-lg` / `shadow-none` utilities with no
+   specificity fight. */
+.classNameOverride {
+  border-radius: var(--ui-radius-2xl);
+  border-color: var(--ui-color-primary);
+  box-shadow: var(--ui-shadow-xl);
+}
+
+/* Layer 3 — classNames slot map: reach individual internal slots without
+   touching the root. */
+.overrideTitle {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: var(--ui-font-size-xs);
+}
+
+.overridePrice {
+  color: var(--ui-color-danger);
+  font-weight: 700;
+}
+
+.overrideCta {
+  border-radius: var(--ui-radius-full);
+}
+
+/* Layer 4 — swapped Price slot: a whole different price presentation. */
+.bulkPrice {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--ui-space-1);
+  padding: var(--ui-space-1) var(--ui-space-2);
+  background: var(--ui-color-primary);
+  color: var(--ui-color-primary-fg);
+  border-radius: var(--ui-radius-full);
+  font-weight: 700;
+}
+
+.bulkPriceUnit {
+  font-size: var(--ui-font-size-xs);
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+/* Layer 4 — asChild: standalone Button/next-Link demo, boxed to match the
+   other three cells visually. */
+.asChildBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--ui-space-3);
+  height: 100%;
+  padding: var(--ui-space-4);
+  background: var(--ui-color-surface);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-lg);
+}
+
+.asChildCopy {
+  margin: 0;
+  font-size: var(--ui-font-size-sm);
+  color: var(--ui-color-foreground-muted);
+}
+
+.asChildCopy code {
+  font-family: var(--ui-font-mono);
+  color: var(--ui-color-foreground);
+}
