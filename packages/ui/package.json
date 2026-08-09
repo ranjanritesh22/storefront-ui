@@ -50,7 +50,7 @@
     "vitest": "^4.1.10"
   },
   "scripts": {
-    "build": "tsup && pnpm run build:css",
+    "build": "tsup && pnpm run build:css && node ../../scripts/check-directives.mjs",
     "build:css": "tailwindcss -i src/styles/index.css -o dist/styles.css",
     "dev": "concurrently -n tsup,css \"tsup --watch\" \"tailwindcss -i src/styles/index.css -o dist/styles.css --watch\"",
     "typecheck": "tsc --noEmit",

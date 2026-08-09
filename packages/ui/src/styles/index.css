@@ -2,6 +2,52 @@
 @import "tailwindcss";
 @import "@storefront/tokens/tokens.css" layer(theme);
 
+/**
+ * Map --ui-* semantic tokens into Tailwind v4's theme namespace so utilities
+ * like `bg-primary` / `rounded-md` / `font-sans` are generated.
+ *
+ * `inline` (not plain `@theme`) is required: a plain `@theme` block bakes the
+ * *value* it's given at build time into the generated `:root` custom
+ * property, so `--color-primary` would freeze to whatever --ui-color-primary
+ * resolved to when this file was compiled. `@theme inline` instead makes
+ * Tailwind emit the utility referencing `var(--ui-color-primary)` directly,
+ * so a consumer overriding --ui-color-primary in their own CSS changes what
+ * `bg-primary` paints with zero rebuild of this package (ARCHITECTURE.md §4.1).
+ */
+@theme inline {
+  --color-surface: var(--ui-color-surface);
+  --color-surface-raised: var(--ui-color-surface-raised);
+  --color-foreground: var(--ui-color-foreground);
+  --color-foreground-muted: var(--ui-color-foreground-muted);
+  --color-primary: var(--ui-color-primary);
+  --color-primary-fg: var(--ui-color-primary-fg);
+  --color-border: var(--ui-color-border);
+  --color-ring: var(--ui-color-ring);
+  --color-danger: var(--ui-color-danger);
+  --color-danger-fg: var(--ui-color-danger-fg);
+  --color-success: var(--ui-color-success);
+  --color-success-fg: var(--ui-color-success-fg);
+  --color-warning: var(--ui-color-warning);
+  --color-warning-fg: var(--ui-color-warning-fg);
+
+  --radius-none: var(--ui-radius-none);
+  --radius-sm: var(--ui-radius-sm);
+  --radius-md: var(--ui-radius-md);
+  --radius-lg: var(--ui-radius-lg);
+  --radius-xl: var(--ui-radius-xl);
+  --radius-2xl: var(--ui-radius-2xl);
+  --radius-full: var(--ui-radius-full);
+
+  --font-sans: var(--ui-font-sans);
+  --font-serif: var(--ui-font-serif);
+  --font-mono: var(--ui-font-mono);
+
+  --shadow-sm: var(--ui-shadow-sm);
+  --shadow-md: var(--ui-shadow-md);
+  --shadow-lg: var(--ui-shadow-lg);
+  --shadow-xl: var(--ui-shadow-xl);
+}
+
 @layer ui-components {
   /* Component styles land here as components are added under src/components/*. */
 }
