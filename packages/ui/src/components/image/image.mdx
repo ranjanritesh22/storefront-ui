@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ImageStories from "./image.stories";
+
+<Meta of={ImageStories} />
+
+# Image
+
+<Description of={ImageStories} />
+
+<Canvas of={ImageStories.Playground} />
+
+<Controls of={ImageStories.Playground} />
+
+## `fill` mode
+
+For a card/banner with a fixed aspect-ratio box — the nearest ancestor needs `position: relative`.
+
+<Canvas of={ImageStories.Fill} />
+
+## Overriding this component
+
+### Non-Next consumers
+
+Do nothing. The built-in fallback is a plain `<img>` with sensible `loading` defaults.
+
+### Next.js consumers
+
+```ts
+// app/images.ts — imported once for its side effect, e.g. app/layout.tsx
+import { configureImageComponent } from "@storefront/ui";
+import NextImage from "next/image";
+
+configureImageComponent(NextImage);
+```
+
+Every `<Image>` in this package — `ProductCard`'s media, gallery thumbnails, banners — now
+renders through `next/image`, picking up Next's optimization, `srcset` generation, and
+lazy-loading, with zero per-component changes.
+
+Module-level registry, not a Context — see `icon.mdx`'s "Overriding this component" section for
+the identical reasoning (Server Component safety, process-wide not per-request).

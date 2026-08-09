@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../lib/cn";
+import { getMessages } from "../../i18n/messages";
 import { priceVariants, type PriceVariantsProps } from "./price.variants";
 
 export interface PriceProps
@@ -57,8 +58,11 @@ export const Price = React.forwardRef<HTMLSpanElement, PriceProps>(
         className={cn(priceVariants({ size }), className)}
         {...props}
       >
-        {onSale ? (
-          <s className="text-foreground-muted font-normal" aria-label={`Original price ${formattedOriginal}`}>
+        {onSale && formattedOriginal ? (
+          <s
+            className="text-foreground-muted font-normal"
+            aria-label={getMessages().price.original(formattedOriginal)}
+          >
             {formattedOriginal}
           </s>
         ) : null}

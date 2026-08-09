@@ -57,6 +57,19 @@ packages/ui/src/components/<name>/
 
 Adding a component touches **only** its own folder plus one line in `packages/ui/src/index.ts`.
 
+Three cross-cutting subsystems live outside the per-component folders — every component reads
+from these instead of hardcoding an icon, a string, or an `<img>`:
+
+```
+packages/ui/src/components/icon/    Icon primitive + the ~40-icon default registry (its own
+                                     component folder — same five-file shape)
+packages/ui/src/components/image/   Image primitive + the <img> fallback (same shape)
+packages/ui/src/i18n/messages.ts    English default copy, namespaced per component
+packages/ui/src/types/product.ts    ProductSummary — the domain-agnostic product shape
+packages/ui/src/config.ts           configureStorefrontUI() — one-call wrapper around the
+                                     three configure*() registries below
+```
+
 ---
 
 ## Hard rules
@@ -82,6 +95,41 @@ Adding a component touches **only** its own folder plus one line in `packages/ui
    and labels, `prefers-reduced-motion` honoured. Verify by keyboard, not by assumption.
 10. **Public API is a contract.** Removing/renaming a token, variant, or prop is a breaking
     change — call it out in the response, don't do it silently.
+11. **No raw `<svg>` icon and no hardcoded icon choice in a component.** Render catalog icons
+    via `<Icon name="...">` (`packages/ui/src/components/icon`). This is what lets a consumer
+    re-skin the whole icon set with one `configureIcons()` call to match a client's design
+    language — a real, recurring requirement, not a hypothetical. Add a new glyph to the
+    registry rather than inlining an `<svg>` in a component. A one-off decorative icon that will
+    never appear in the registry (not reused, not swappable) is the one exception — say so if
+    you reach for it.
+12. **No hardcoded user-facing string in a component** — no button text, aria-label, placeholder,
+    or pluralized copy. Every string a shopper reads or a screen reader announces comes from
+    `getMessages()` (`packages/ui/src/i18n/messages.ts`), with the component's own prop (if any)
+    winning over the dictionary. Add the string to `StorefrontMessages`/`defaultMessages` (English)
+    rather than typing it inline. This package still has zero i18n-framework dependency — the
+    dictionary is a plain object, not a translation library.
+13. **No raw `<img>` in a component.** Render every image through `<Image>`
+    (`packages/ui/src/components/image`) — defaults to a plain `<img>`, but lets a Next.js
+    consumer swap in `next/image` globally via `configureImageComponent()` without this package
+    depending on Next.js or pinning a Next version.
+14. **Domain-agnostic props only.** No SAP Commerce/OCC types, no backend response shapes, no
+    `any`-typed "just pass through what the API gives you" props. Define a minimal prop
+    interface for the domain concept you need (see `ProductSummary` in
+    `packages/ui/src/types/product.ts`: `id`, `name`, `price`, `image`, `url`, ...) and document
+    an adapter — a small function in the *consumer's* code mapping their API response onto it
+    (see product-card.mdx). This package never owns that mapping logic; owning it would violate
+    the "no backend/commerce-API types" non-goal above.
+
+`configureIcons()`, `configureMessages()`, and `configureImageComponent()` (or the
+`configureStorefrontUI()` wrapper covering all three) share one shape on purpose: a plain
+module-level registry, not a React Context. Reading one is a bare function/object lookup, so a
+component using it needs no hook and stays a Server Component if it was one — the same reason
+ARCHITECTURE.md §4 rules out a Context-based registry for whole-component replacement. Call them
+once, at module scope in the consumer's app (e.g. imported for its side effect at the top of
+`app/layout.tsx`) — they hold process-wide state correct for one icon set / one language / one
+image strategy per build or deployment, not per-request state. A single server process that must
+serve multiple languages per request should pass the relevant strings as explicit props per
+instance instead of relying on `configureMessages()`.
 
 ---
 
@@ -91,6 +139,12 @@ Adding a component touches **only** its own folder plus one line in `packages/ui
 - [ ] Variants in `*.variants.ts`, exported from the package barrel
 - [ ] `className` override verified to win (test asserts it)
 - [ ] Token-only styling — no literals (grep before finishing)
+- [ ] No hardcoded user-facing string — every one comes from `getMessages()` (grep for quoted
+      text in JSX/aria-label/placeholder before finishing)
+- [ ] No raw `<svg>` icon — routed through `<Icon name="...">`; no raw `<img>` — routed through
+      `<Image>`
+- [ ] If the component takes a "product"/domain object, it's a minimal prop interface (see
+      `ProductSummary`), not a backend response type
 - [ ] `"use client"` present only if genuinely required
 - [ ] Keyboard + screen-reader semantics checked
 - [ ] Story with a controls table and an "Overriding this component" doc block

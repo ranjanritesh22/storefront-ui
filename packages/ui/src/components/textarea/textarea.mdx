@@ -1,0 +1,34 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as TextareaStories from "./textarea.stories";
+
+<Meta of={TextareaStories} />
+
+# Textarea
+
+<Description of={TextareaStories} />
+
+<Canvas of={TextareaStories.Playground} />
+
+<Controls of={TextareaStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every textarea at once
+
+<Canvas of={TextareaStories.OverrideTokens} />
+
+### 2. `textareaVariants` — style something that isn't a `Textarea`
+
+```tsx
+<textarea className={textareaVariants({ size: "sm" })} />
+```
+
+## FormField integration
+
+```tsx
+<FormField label="Order notes" hint="Optional — up to 500 characters." error={errors.notes}>
+  <Textarea maxLength={500} />
+</FormField>
+```

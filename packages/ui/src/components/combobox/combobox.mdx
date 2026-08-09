@@ -1,0 +1,77 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ComboboxStories from "./combobox.stories";
+
+<Meta of={ComboboxStories} />
+
+# Combobox
+
+<Description of={ComboboxStories} />
+
+<Canvas of={ComboboxStories.Playground} />
+
+<Controls of={ComboboxStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every combobox at once
+
+<Canvas of={ComboboxStories.OverrideTokens} />
+
+### 2. `comboboxInputVariants` / `comboboxContentVariants` / `comboboxOptionVariants` — style something that isn't a `Combobox`
+
+```tsx
+<input className={comboboxInputVariants({ size: "sm" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<Combobox options={brands} classNames={{ option: "py-2" }} />
+```
+
+## Async options
+
+<Canvas of={ComboboxStories.Async} />
+
+```tsx
+<Combobox
+  aria-label="Brand"
+  loadOptions={async (query) => {
+    const response = await fetch(`/api/brands?q=${encodeURIComponent(query)}`);
+    return response.json();
+  }}
+  debounceMs={300}
+/>
+```
+
+`loadOptions` is called on open and on every keystroke, debounced by `debounceMs` (default
+`250`). While a request is in flight, the trailing icon shows a spinner and the live region
+announces "Loading options…" instead of a result count.
+
+## Keyboard interaction
+
+Built to the WAI-ARIA APG "Combobox with List Autocomplete" pattern:
+
+- DOM focus never leaves the text input — the popover's `onOpenAutoFocus`/`onCloseAutoFocus` are
+  both prevented, so opening the listbox doesn't steal focus.
+- <kbd>↓</kbd>/<kbd>↑</kbd> move a *virtual* focus (`aria-activedescendant`) across options,
+  wrapping at the ends and skipping `disabled` ones.
+- <kbd>Home</kbd>/<kbd>End</kbd> jump to the first/last enabled option.
+- <kbd>Enter</kbd> selects the active option; <kbd>Escape</kbd> closes the listbox and reverts
+  any unsaved query text back to the current selection.
+- A visually-hidden `role="status"` live region announces the result count (or the loading
+  state) as the list changes, so screen reader users get feedback without navigating into the
+  listbox.
+
+## FormField integration
+
+```tsx
+<FormField label="Brand" error={errors.brand}>
+  <Combobox options={brands} />
+</FormField>
+```
+
+`FormField` clones `id`/`aria-invalid`/`aria-describedby`/`data-invalid` onto the underlying
+`<input role="combobox">` — the same element screen readers read the field's error state from.

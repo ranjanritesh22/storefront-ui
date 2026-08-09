@@ -143,14 +143,15 @@ export function PlpExplorer() {
             aria-label="Sort by"
             className={styles.sortSelect}
             value={sortBy}
-            onChange={(event) => setSortBy(event.target.value as SortValue)}
-          >
-            <option value="popularity">Popularity</option>
-            <option value="newest">Newest first</option>
-            <option value="price-asc">Price: low to high</option>
-            <option value="price-desc">Price: high to low</option>
-            <option value="rating">Customer rating</option>
-          </Select>
+            onValueChange={(nextValue) => setSortBy(nextValue as SortValue)}
+            options={[
+              { value: "popularity", label: "Popularity" },
+              { value: "newest", label: "Newest first" },
+              { value: "price-asc", label: "Price: low to high" },
+              { value: "price-desc", label: "Price: high to low" },
+              { value: "rating", label: "Customer rating" },
+            ]}
+          />
         </div>
       </div>
 

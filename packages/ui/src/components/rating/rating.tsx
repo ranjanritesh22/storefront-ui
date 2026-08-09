@@ -1,5 +1,7 @@
 import * as React from "react";
 import { cn } from "../../lib/cn";
+import { Icon } from "../icon/icon";
+import { getMessages } from "../../i18n/messages";
 import { ratingVariants, type RatingVariantsProps } from "./rating.variants";
 
 export interface RatingClassNames {
@@ -20,23 +22,16 @@ export interface RatingProps
   classNames?: RatingClassNames;
 }
 
-const STAR_PATH =
-  "M10 1.5l2.59 5.25 5.79.84-4.19 4.09.99 5.77L10 14.77l-5.18 2.68.99-5.77L1.62 7.59l5.79-.84L10 1.5z";
-
 function Star({ fraction, className }: { fraction: number; className?: string }) {
   return (
     <span className={cn("relative inline-block shrink-0", className)}>
-      <svg viewBox="0 0 20 20" fill="currentColor" className="text-border">
-        <path d={STAR_PATH} />
-      </svg>
+      <Icon name="star" className="text-border" />
       <span
         aria-hidden="true"
         className="absolute inset-y-0 start-0 overflow-hidden text-warning"
         style={{ width: `${fraction * 100}%` }}
       >
-        <svg viewBox="0 0 20 20" fill="currentColor" className="size-full">
-          <path d={STAR_PATH} />
-        </svg>
+        <Icon name="star" className="size-full" />
       </span>
     </span>
   );
@@ -62,9 +57,7 @@ export const Rating = React.forwardRef<HTMLSpanElement, RatingProps>(
       <span
         ref={ref}
         role="img"
-        aria-label={`Rated ${clamped} out of ${max} stars${
-          formattedCount ? `, ${count} reviews` : ""
-        }`}
+        aria-label={getMessages().rating.label({ value: clamped, max, count: formattedCount ? count : undefined })}
         className={cn(ratingVariants({ size }), classNames?.root, className)}
         {...props}
       >

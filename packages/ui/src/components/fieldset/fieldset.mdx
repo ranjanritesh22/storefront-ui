@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as FieldsetStories from "./fieldset.stories";
+
+<Meta of={FieldsetStories} />
+
+# Fieldset
+
+<Description of={FieldsetStories} />
+
+<Canvas of={FieldsetStories.Playground} />
+
+<Controls of={FieldsetStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every fieldset at once
+
+Override `--ui-color-foreground` / `--ui-color-danger` on `:root` or scoped under `[data-theme]`.
+
+### 2. `fieldsetVariants` / `legendVariants` — style something that isn't a `Fieldset`
+
+```tsx
+<div className={fieldsetVariants({ gap: "sm" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<Fieldset legend="Shipping method" classNames={{ legend: "text-lg" }} />
+```
+
+## Grouping a `RadioGroup` or a run of `Checkbox`es
+
+<Canvas of={FieldsetStories.CheckboxGroup} />
+
+`Fieldset` gives a *set* of controls one accessible name via `<legend>`, which is different from
+`FormField`'s job of wiring a label/hint/error to a *single* control. Nest a `FormField` (or a
+bare `RadioGroup`) inside a `Fieldset` when you need both: the group-level legend plus a
+per-control error.

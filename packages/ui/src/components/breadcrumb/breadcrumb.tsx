@@ -1,5 +1,7 @@
 import * as React from "react";
 import { cn } from "../../lib/cn";
+import { Icon } from "../icon/icon";
+import { getMessages } from "../../i18n/messages";
 import { breadcrumbVariants, type BreadcrumbVariantsProps } from "./breadcrumb.variants";
 
 export interface BreadcrumbItem {
@@ -47,11 +49,7 @@ function DefaultBreadcrumbLink({ href, className, children }: BreadcrumbLinkProp
 }
 
 function DefaultSeparator() {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-3.5">
-      <path d="M7 4l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
+  return <Icon name="chevron-right" size="sm" />;
 }
 
 /**
@@ -59,11 +57,16 @@ function DefaultSeparator() {
  * rule 2). The last item with no `href` renders as the current page.
  */
 export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
-  ({ className, classNames, size, items, separator, label = "Breadcrumb", slots, ...props }, ref) => {
+  ({ className, classNames, size, items, separator, label, slots, ...props }, ref) => {
     const LinkSlot = slots?.Link ?? DefaultBreadcrumbLink;
 
     return (
-      <nav ref={ref} aria-label={label} className={cn(classNames?.root, className)} {...props}>
+      <nav
+        ref={ref}
+        aria-label={label ?? getMessages().breadcrumb.nav}
+        className={cn(classNames?.root, className)}
+        {...props}
+      >
         <ol className={cn(breadcrumbVariants({ size }), classNames?.list)}>
           {items.map((item, index) => {
             const isLast = index === items.length - 1;

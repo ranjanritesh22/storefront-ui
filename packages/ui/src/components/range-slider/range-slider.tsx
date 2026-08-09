@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../lib/cn";
+import { getMessages } from "../../i18n/messages";
 import { useRangeSlider, type UseRangeSliderOptions } from "../../hooks/use-range-slider";
 import {
   rangeSliderVariants,
@@ -53,14 +54,15 @@ export const RangeSlider = React.forwardRef<HTMLDivElement, RangeSliderProps>(
       minStepsBetweenThumbs,
       onChange,
       disabled = false,
-      lowerLabel = "Minimum value",
-      upperLabel = "Maximum value",
+      lowerLabel,
+      upperLabel,
       formatValue = defaultFormatValue,
       hideOutput = false,
       ...props
     },
     ref,
   ) => {
+    const t = getMessages();
     const slider = useRangeSlider({
       min,
       max,
@@ -83,14 +85,14 @@ export const RangeSlider = React.forwardRef<HTMLDivElement, RangeSliderProps>(
           />
           <input
             type="range"
-            aria-label={lowerLabel}
+            aria-label={lowerLabel ?? t.rangeSlider.minimum}
             disabled={disabled}
             className={cn("z-10", rangeSliderThumbVariants({ size }), classNames?.thumb)}
             {...slider.lowerInputProps}
           />
           <input
             type="range"
-            aria-label={upperLabel}
+            aria-label={upperLabel ?? t.rangeSlider.maximum}
             disabled={disabled}
             className={cn("z-20", rangeSliderThumbVariants({ size }), classNames?.thumb)}
             {...slider.upperInputProps}

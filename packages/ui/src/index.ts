@@ -4,6 +4,14 @@
 export { cn } from "./lib/cn";
 export { Slot, Slottable } from "./lib/slot";
 
+export { configureStorefrontUI } from "./config";
+export type { ConfigureStorefrontUIOptions } from "./config";
+
+export { configureMessages, resetMessages, getMessages, defaultMessages } from "./i18n/messages";
+export type { StorefrontMessages } from "./i18n/messages";
+
+export type { ProductSummary } from "./types/product";
+
 export { useQuantity } from "./hooks/use-quantity";
 export type { UseQuantityOptions, UseQuantityResult } from "./hooks/use-quantity";
 
@@ -92,8 +100,79 @@ export type {
   CheckboxVariantsProps,
 } from "./components/checkbox";
 
-export { Select, selectVariants } from "./components/select";
-export type { SelectProps, SelectClassNames, SelectVariantsProps } from "./components/select";
+export { Select, selectVariants, selectContentVariants, selectItemVariants } from "./components/select";
+export type {
+  SelectProps,
+  SelectClassNames,
+  SelectOption,
+  SelectOptionGroup,
+  SelectVariantsProps,
+} from "./components/select";
+
+export { RadioGroup, Radio, radioGroupVariants, radioVariants, radioBoxVariants, radioIndicatorVariants } from "./components/radio-group";
+export type {
+  RadioGroupProps,
+  RadioGroupClassNames,
+  RadioProps,
+  RadioClassNames,
+  RadioGroupVariantsProps,
+  RadioVariantsProps,
+} from "./components/radio-group";
+
+export { Switch, switchVariants, switchTrackVariants, switchThumbVariants } from "./components/switch";
+export type { SwitchProps, SwitchClassNames, SwitchVariantsProps } from "./components/switch";
+
+export { Label, labelVariants } from "./components/label";
+export type { LabelProps, LabelVariantsProps } from "./components/label";
+
+export { Textarea, textareaVariants } from "./components/textarea";
+export type { TextareaProps, TextareaVariantsProps } from "./components/textarea";
+
+export { Fieldset, fieldsetVariants, legendVariants } from "./components/fieldset";
+export type { FieldsetProps, FieldsetClassNames, FieldsetVariantsProps } from "./components/fieldset";
+
+export {
+  Combobox,
+  comboboxInputVariants,
+  comboboxContentVariants,
+  comboboxOptionVariants,
+} from "./components/combobox";
+export type {
+  ComboboxProps,
+  ComboboxOption,
+  ComboboxClassNames,
+  ComboboxVariantsProps,
+} from "./components/combobox";
+
+export {
+  FileUpload,
+  fileUploadVariants,
+  dropzoneVariants,
+  fileListVariants,
+  fileRowVariants,
+  fileRowProgressVariants,
+  fileRowProgressBarVariants,
+} from "./components/file-upload";
+export type {
+  FileUploadProps,
+  FileUploadItem,
+  FileUploadClassNames,
+  FileUploadVariantsProps,
+  DropzoneVariantsProps,
+} from "./components/file-upload";
+
+export {
+  DatePicker,
+  datePickerTriggerVariants,
+  datePickerContentVariants,
+  datePickerNavButtonVariants,
+  datePickerDayVariants,
+} from "./components/date-picker";
+export type {
+  DatePickerProps,
+  DatePickerClassNames,
+  DatePickerVariantsProps,
+} from "./components/date-picker";
 
 export { Rating, ratingVariants } from "./components/rating";
 export type { RatingProps, RatingClassNames, RatingVariantsProps } from "./components/rating";
@@ -130,3 +209,14 @@ export type {
   PaginationSlots,
   PaginationVariantsProps,
 } from "./components/pagination";
+
+export { Icon, configureIcons, resetIcons, iconVariants, defaultIcons } from "./components/icon";
+export type { IconProps, IconGlyph, IconGlyphProps, IconName, IconVariantsProps } from "./components/icon";
+
+export { Image, configureImageComponent, resetImageComponent, imageVariants } from "./components/image";
+export type {
+  ImageProps,
+  StorefrontImageProps,
+  ImageComponent,
+  ImageVariantsProps,
+} from "./components/image";

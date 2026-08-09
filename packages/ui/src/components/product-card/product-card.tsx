@@ -5,6 +5,10 @@ import { Price, type PriceProps } from "../price/price";
 import { Badge, type BadgeProps } from "../badge/badge";
 import { Button, type ButtonProps } from "../button/button";
 import { Rating, type RatingProps } from "../rating/rating";
+import { Icon } from "../icon/icon";
+import { Image } from "../image/image";
+import { getMessages } from "../../i18n/messages";
+import type { ProductSummary } from "../../types/product";
 import { productCardVariants, type ProductCardVariantsProps } from "./product-card.variants";
 
 export interface ProductCardClassNames {
@@ -36,19 +40,27 @@ export interface ProductCardSlots {
 }
 
 function DefaultProductImage({ src, alt, className }: ProductCardImageProps) {
-  return <img src={src} alt={alt} loading="lazy" className={cn("h-full w-full object-cover", className)} />;
+  return <Image src={src} alt={alt} fill sizes="(min-width: 768px) 25vw, 50vw" className={className} />;
 }
 
 export interface ProductCardProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
     ProductCardVariantsProps {
-  title: string;
+  /**
+   * Domain-agnostic product shape — an alternative to passing `title` /
+   * `imageSrc` / `imageAlt` / `price` individually below. Map your API
+   * response onto this once; see CLAUDE.md's "Domain-agnostic props" rule
+   * and the adapter example in product-card.mdx. An individual prop below
+   * wins over the matching `product` field when both are given.
+   */
+  product?: ProductSummary;
+  title?: string;
   /** Muted line under the title, e.g. a category ("Men's Shoes"). */
   subtitle?: React.ReactNode;
-  imageSrc: string;
-  imageAlt: string;
+  imageSrc?: string;
+  imageAlt?: string;
   /** In the currency's major unit, e.g. `19.99`. Forwarded to the `Price` slot. */
-  price: number;
+  price?: number;
   originalPrice?: number;
   currency?: string;
   locale?: string;
@@ -97,20 +109,7 @@ function WishlistToggle({
         className,
       )}
     >
-      <svg
-        viewBox="0 0 20 20"
-        fill={wishlisted ? "currentColor" : "none"}
-        stroke="currentColor"
-        strokeWidth="1.5"
-        className="size-4"
-        aria-hidden="true"
-      >
-        <path
-          d="M10 17s-6.5-4.06-6.5-8.5A3.5 3.5 0 0110 6a3.5 3.5 0 016.5 2.5C16.5 12.94 10 17 10 17z"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      <Icon name="heart" fill={wishlisted ? "currentColor" : "none"} />
     </button>
   );
 }
@@ -121,13 +120,14 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       className,
       classNames,
       aspect,
+      product,
       title,
       subtitle,
       imageSrc,
       imageAlt,
       price,
       originalPrice,
-      currency = "USD",
+      currency,
       locale = "en-US",
       priceFormatOptions,
       badgeLabel,
@@ -137,7 +137,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       onWishlistToggle,
       wishlisted = false,
       wishlistLabel,
-      ctaLabel = "Add to cart",
+      ctaLabel,
       onCtaClick,
       href,
       slots,
@@ -145,6 +145,29 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
     },
     ref,
   ) => {
+    const t = getMessages();
+
+    const resolvedTitle = title ?? product?.name;
+    const resolvedImageSrc = imageSrc ?? product?.image.src;
+    const resolvedImageAlt = imageAlt ?? product?.image.alt;
+    const resolvedPrice = price ?? product?.price;
+    const resolvedOriginalPrice = originalPrice ?? product?.originalPrice;
+    const resolvedCurrency = currency ?? product?.currency ?? "USD";
+    const resolvedBadgeLabel = badgeLabel ?? product?.badge;
+    const resolvedRating = rating ?? product?.rating?.value;
+    const resolvedRatingCount = ratingCount ?? product?.rating?.count;
+    const resolvedColorsCount = colorsCount ?? product?.colorsCount;
+    const resolvedHref = href ?? product?.url;
+
+    if (process.env.NODE_ENV !== "production") {
+      if (resolvedTitle === undefined || resolvedImageSrc === undefined || resolvedImageAlt === undefined) {
+        console.error("ProductCard: provide either `product` or `title` + `imageSrc` + `imageAlt`.");
+      }
+      if (resolvedPrice === undefined) {
+        console.error("ProductCard: provide either `product.price` or `price`.");
+      }
+    }
+
     const ImageSlot = slots?.Image ?? DefaultProductImage;
     const PriceSlot = slots?.Price ?? Price;
     const BadgeSlot = slots?.Badge ?? Badge;
@@ -153,16 +176,18 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
 
     const media = (
       <div className={cn(productCardVariants({ aspect }), classNames?.image)}>
-        <ImageSlot src={imageSrc} alt={imageAlt} />
-        {badgeLabel ? (
+        <ImageSlot src={resolvedImageSrc ?? ""} alt={resolvedImageAlt ?? ""} />
+        {resolvedBadgeLabel ? (
           <BadgeSlot variant="primary" className={cn("absolute start-3 top-3", classNames?.badge)}>
-            {badgeLabel}
+            {resolvedBadgeLabel}
           </BadgeSlot>
         ) : null}
         {onWishlistToggle ? (
           <WishlistToggle
             wishlisted={wishlisted}
-            label={wishlistLabel ?? (wishlisted ? "Remove from wishlist" : "Add to wishlist")}
+            label={
+              wishlistLabel ?? (wishlisted ? t.productCard.removeFromWishlist : t.productCard.addToWishlist)
+            }
             onClick={onWishlistToggle}
             className={classNames?.wishlist}
           />
@@ -176,27 +201,27 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         className={cn("group flex h-full flex-col overflow-hidden", classNames?.root, className)}
         {...props}
       >
-        {href ? (
-          <a href={href} aria-label={title} className="block">
+        {resolvedHref ? (
+          <a href={resolvedHref} aria-label={resolvedTitle} className="block">
             {media}
           </a>
         ) : (
           media
         )}
         <CardContent className={cn("flex flex-1 flex-col gap-2 p-4", classNames?.body)}>
-          {href ? (
+          {resolvedHref ? (
             <a
-              href={href}
+              href={resolvedHref}
               className={cn(
                 "font-sans text-sm font-medium text-foreground hover:underline",
                 classNames?.title,
               )}
             >
-              {title}
+              {resolvedTitle}
             </a>
           ) : (
             <p className={cn("font-sans text-sm font-medium text-foreground", classNames?.title)}>
-              {title}
+              {resolvedTitle}
             </p>
           )}
           {subtitle ? (
@@ -205,25 +230,30 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
             </p>
           ) : null}
           <PriceSlot
-            value={price}
-            originalValue={originalPrice}
-            currency={currency}
+            value={resolvedPrice ?? 0}
+            originalValue={resolvedOriginalPrice}
+            currency={resolvedCurrency}
             locale={locale}
             formatOptions={priceFormatOptions}
             className={classNames?.price}
           />
-          {typeof rating === "number" ? (
-            <RatingSlot value={rating} count={ratingCount} size="sm" className={classNames?.rating} />
+          {typeof resolvedRating === "number" ? (
+            <RatingSlot
+              value={resolvedRating}
+              count={resolvedRatingCount}
+              size="sm"
+              className={classNames?.rating}
+            />
           ) : null}
-          {typeof colorsCount === "number" ? (
+          {typeof resolvedColorsCount === "number" ? (
             <p className={cn("font-sans text-xs text-foreground-muted", classNames?.colors)}>
-              {colorsCount} {colorsCount === 1 ? "color" : "colors"}
+              {t.productCard.colorsCount(resolvedColorsCount)}
             </p>
           ) : null}
         </CardContent>
         <CardFooter className="p-4 pt-0">
           <CtaSlot fullWidth onClick={onCtaClick} className={classNames?.cta}>
-            {ctaLabel}
+            {ctaLabel ?? t.productCard.addToCart}
           </CtaSlot>
         </CardFooter>
       </Card>

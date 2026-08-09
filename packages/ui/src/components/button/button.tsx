@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Slot, Slottable } from "../../lib/slot";
 import { cn } from "../../lib/cn";
+import { Icon } from "../icon/icon";
 import { buttonVariants, type ButtonVariantsProps } from "./button.variants";
 
 export interface ButtonProps
@@ -12,24 +13,6 @@ export interface ButtonProps
   asChild?: boolean;
   /** Shows a spinner, sets `data-loading`/`aria-busy`, and blocks interaction. */
   loading?: boolean;
-}
-
-function ButtonSpinner({ className }: { className?: string }) {
-  return (
-    <svg
-      className={cn("size-4 shrink-0 motion-safe:animate-spin", className)}
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4z"
-      />
-    </svg>
-  );
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -75,7 +58,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         onClick={handleClick}
         {...props}
       >
-        {loading ? <ButtonSpinner /> : null}
+        {loading ? <Icon name="spinner" /> : null}
         {asChild ? <Slottable>{children}</Slottable> : children}
       </Comp>
     );

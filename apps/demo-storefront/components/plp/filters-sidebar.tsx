@@ -79,7 +79,7 @@ export function FiltersSidebar({
               label={facet.label}
               description={`(${facet.count})`}
               checked={selectedCategories.has(facet.label)}
-              onChange={() => onToggleCategory(facet.label)}
+              onCheckedChange={() => onToggleCategory(facet.label)}
             />
           ))}
         </div>
@@ -94,7 +94,7 @@ export function FiltersSidebar({
               label={facet.label}
               description={`(${facet.count})`}
               checked={selectedBrands.has(facet.label)}
-              onChange={() => onToggleBrand(facet.label)}
+              onCheckedChange={() => onToggleBrand(facet.label)}
             />
           ))}
         </div>
@@ -163,7 +163,7 @@ export function FiltersSidebar({
               key={value}
               label={`${value}% and above`}
               checked={selectedDiscounts.has(value)}
-              onChange={() => onToggleDiscount(value)}
+              onCheckedChange={() => onToggleDiscount(value)}
             />
           ))}
         </div>

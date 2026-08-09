@@ -19,14 +19,36 @@ Full model: [docs/overriding.md](../../../../../docs/overriding.md).
 
 <Canvas of={SelectStories.OverrideTokens} />
 
-### 2. `selectVariants` — style something that isn't a `Select`
+### 2. `selectVariants` / `selectContentVariants` / `selectItemVariants` — style something that isn't a `Select`
 
 ```tsx
-<select className={selectVariants({ size: "sm" })} />
+<button className={selectVariants({ size: "sm" })} />
 ```
 
 ### 3. `classNames` — reach a specific part
 
 ```tsx
-<Select classNames={{ icon: "hidden" }} />
+<Select options={options} classNames={{ icon: "hidden" }} />
+```
+
+## Options
+
+`options` accepts a flat list or groups:
+
+```tsx
+<Select
+  aria-label="Sort by"
+  options={[
+    { value: "popularity", label: "Popularity" },
+    { value: "price-asc", label: "Price: low to high" },
+  ]}
+/>
+```
+
+## FormField integration
+
+```tsx
+<FormField label="Size" error={errors.size}>
+  <Select options={sizeOptions} placeholder="Choose a size" />
+</FormField>
 ```

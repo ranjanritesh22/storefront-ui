@@ -40,3 +40,44 @@ Swap any part of the composition while the rest stays exactly as-is — here the
 renders with a different variant without touching the image, title, price, or CTA.
 
 <Canvas of={ProductCardStories.OverrideStructural} />
+
+## Domain-agnostic props: the `product` prop and adapters
+
+`ProductCard` accepts either individual props (`title`, `imageSrc`, `imageAlt`, `price`, ...) or
+a single `product` prop typed as `ProductSummary` — a minimal, backend-agnostic shape this
+package owns and exports. `ProductSummary` is not shaped like any commerce backend's response;
+this package has no data-fetching or backend-types dependency (see ARCHITECTURE.md §1 and
+CLAUDE.md's "Domain-agnostic props" rule). You map your API response onto it once, in your own
+code — never inside this package:
+
+```ts
+import type { ProductSummary } from "@storefront/ui";
+
+// Example: adapting a SAP Commerce Cloud (OCC) product response.
+// occProduct's actual shape depends on your OCC config — this is illustrative.
+function fromOccProduct(occProduct: OccProduct): ProductSummary {
+  return {
+    id: occProduct.code,
+    name: occProduct.name,
+    price: occProduct.price?.value ?? 0,
+    currency: occProduct.price?.currencyIso,
+    originalPrice: occProduct.discountedPrice?.value,
+    image: {
+      src: occProduct.images?.find((img) => img.format === "product")?.url ?? "",
+      alt: occProduct.name,
+    },
+    url: `/product/${occProduct.code}`,
+    badge: occProduct.badges?.[0]?.label,
+    rating: occProduct.averageRating
+      ? { value: occProduct.averageRating, count: occProduct.numberOfReviews }
+      : undefined,
+    colorsCount: occProduct.variantOptions?.length,
+    inStock: occProduct.stock?.stockLevelStatus === "inStock",
+  };
+}
+
+<ProductCard product={fromOccProduct(occProduct)} onCtaClick={() => addToCart(occProduct.code)} />;
+```
+
+An individual prop always wins over the matching `product` field, so you can mix: pass
+`product` for the bulk of the data and override just `ctaLabel` or `badgeLabel` per instance.

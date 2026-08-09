@@ -10,8 +10,8 @@ const meta: Meta<typeof Checkbox> = {
     docs: {
       description: {
         component: `
-A transparent passthrough over a native \`<input type="checkbox">\` — no
-internal state, so it stays a Server Component. Built for filter facets
+Built on \`@radix-ui/react-checkbox\` for correct keyboard and \`aria-checked\`
+(including tri-state \`indeterminate\`) behaviour. Built for filter facets
 (category, brand, discount lists), with an optional trailing count.
 
 ## Overriding this component
@@ -63,6 +63,14 @@ export const Checked: Story = {
 
 export const Disabled: Story = {
   args: { disabled: true },
+};
+
+export const Indeterminate: Story = {
+  args: { checked: "indeterminate" },
+};
+
+export const Invalid: Story = {
+  args: { invalid: true },
 };
 
 export const OverrideTokens: Story = {

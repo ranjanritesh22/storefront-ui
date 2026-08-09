@@ -4,23 +4,33 @@ import { describe, expect, it, vi } from "vitest";
 import { Checkbox } from "./checkbox";
 
 describe("Checkbox", () => {
-  it("associates the label with the input via htmlFor/id", () => {
+  it("associates the label with the control via htmlFor/id", () => {
     render(<Checkbox label="Nike" />);
-    const input = screen.getByLabelText("Nike");
-    expect(input).toBeInstanceOf(HTMLInputElement);
-    expect(input).toHaveAttribute("type", "checkbox");
+    const control = screen.getByRole("checkbox", { name: "Nike" });
+    expect(control).toHaveAttribute("id");
   });
 
-  it("toggles checked state and fires onChange", async () => {
+  it("toggles checked state and fires onCheckedChange", async () => {
     const user = userEvent.setup();
-    const onChange = vi.fn();
-    render(<Checkbox label="Adidas" onChange={onChange} />);
+    const onCheckedChange = vi.fn();
+    render(<Checkbox label="Adidas" onCheckedChange={onCheckedChange} />);
 
-    const input = screen.getByLabelText("Adidas");
-    expect(input).not.toBeChecked();
-    await user.click(input);
-    expect(input).toBeChecked();
-    expect(onChange).toHaveBeenCalledTimes(1);
+    const control = screen.getByRole("checkbox", { name: "Adidas" });
+    expect(control).not.toBeChecked();
+    await user.click(control);
+    expect(control).toBeChecked();
+    expect(onCheckedChange).toHaveBeenCalledWith(true);
+  });
+
+  it("activates via the keyboard", async () => {
+    const user = userEvent.setup();
+    render(<Checkbox label="Puma" />);
+
+    await user.tab();
+    const control = screen.getByRole("checkbox", { name: "Puma" });
+    expect(control).toHaveFocus();
+    await user.keyboard(" ");
+    expect(control).toBeChecked();
   });
 
   it("renders a facet count via description", () => {
@@ -36,6 +46,20 @@ describe("Checkbox", () => {
 
   it("respects a controlled checked value", () => {
     render(<Checkbox label="New Balance" checked readOnly />);
-    expect(screen.getByLabelText("New Balance")).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "New Balance" })).toBeChecked();
+  });
+
+  it("renders the indeterminate state and exposes data-disabled", () => {
+    render(<Checkbox label="Select all" checked="indeterminate" disabled />);
+    const control = screen.getByRole("checkbox", { name: "Select all" });
+    expect(control).toHaveAttribute("data-state", "indeterminate");
+    expect(control).toHaveAttribute("data-disabled");
+  });
+
+  it("sets data-invalid and aria-invalid when invalid", () => {
+    render(<Checkbox label="Terms" invalid />);
+    const control = screen.getByRole("checkbox", { name: "Terms" });
+    expect(control).toHaveAttribute("data-invalid", "true");
+    expect(control).toHaveAttribute("aria-invalid", "true");
   });
 });

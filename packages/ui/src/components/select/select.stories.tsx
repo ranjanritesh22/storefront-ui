@@ -1,6 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Select } from "./select";
 
+const sortOptions = [
+  { value: "popularity", label: "Popularity" },
+  { value: "newest", label: "Newest first" },
+  { value: "price-asc", label: "Price: low to high" },
+  { value: "price-desc", label: "Price: high to low" },
+  { value: "rating", label: "Customer rating" },
+];
+
 const meta: Meta<typeof Select> = {
   title: "Components/Select",
   component: Select,
@@ -10,16 +18,16 @@ const meta: Meta<typeof Select> = {
     docs: {
       description: {
         component: `
-A styled wrapper over a native \`<select>\` — used for the PLP sort control.
-No internal state: a transparent passthrough, so it stays a Server Component.
+Built on \`@radix-ui/react-select\` — used for the PLP sort control. A Client
+Component (owns open/close and highlighted-item state).
 
 ## Overriding this component
 
 **1. Tokens** — \`--ui-color-border\`, \`--ui-color-ring\`.
 
-**2. \`selectVariants\`** — exported publicly.
+**2. \`selectVariants\` / \`selectContentVariants\` / \`selectItemVariants\`** — exported publicly.
 
-**3. \`classNames\`** — a slot map (\`root\`, \`select\`, \`icon\`).
+**3. \`classNames\`** — a slot map (\`trigger\`, \`value\`, \`icon\`, \`content\`, \`viewport\`, \`item\`, \`group\`, \`groupLabel\`).
         `,
       },
     },
@@ -35,16 +43,8 @@ No internal state: a transparent passthrough, so it stays a Server Component.
     disabled: false,
     "aria-label": "Sort by",
     defaultValue: "popularity",
+    options: sortOptions,
   },
-  render: (args) => (
-    <Select {...args}>
-      <option value="popularity">Popularity</option>
-      <option value="newest">Newest first</option>
-      <option value="price-asc">Price: low to high</option>
-      <option value="price-desc">Price: high to low</option>
-      <option value="rating">Customer rating</option>
-    </Select>
-  ),
 };
 
 export default meta;
@@ -56,13 +56,33 @@ export const Sizes: Story = {
   render: (args) => (
     <div className="flex flex-col items-start gap-3">
       {(["sm", "md", "lg"] as const).map((size) => (
-        <Select key={size} {...args} size={size}>
-          <option value="popularity">Popularity</option>
-          <option value="newest">Newest first</option>
-        </Select>
+        <Select key={size} {...args} size={size} />
       ))}
     </div>
   ),
+};
+
+export const Grouped: Story = {
+  args: {
+    "aria-label": "Category",
+    defaultValue: undefined,
+    options: [
+      {
+        label: "Footwear",
+        options: [
+          { value: "running", label: "Running shoes" },
+          { value: "boots", label: "Boots" },
+        ],
+      },
+      {
+        label: "Apparel",
+        options: [
+          { value: "jackets", label: "Jackets" },
+          { value: "tees", label: "T-shirts", disabled: true },
+        ],
+      },
+    ],
+  },
 };
 
 export const Invalid: Story = {
@@ -79,15 +99,11 @@ export const OverrideTokens: Story = {
     <div className="flex flex-wrap items-start gap-6">
       <div className="flex flex-col items-start gap-2">
         <span className="font-mono text-xs text-foreground-muted">default</span>
-        <Select {...args}>
-          <option>Popularity</option>
-        </Select>
+        <Select {...args} />
       </div>
       <div data-theme="dark" className="flex flex-col items-start gap-2 rounded-md bg-surface p-3">
         <span className="font-mono text-xs text-foreground-muted">data-theme=&quot;dark&quot;</span>
-        <Select {...args}>
-          <option>Popularity</option>
-        </Select>
+        <Select {...args} />
       </div>
     </div>
   ),

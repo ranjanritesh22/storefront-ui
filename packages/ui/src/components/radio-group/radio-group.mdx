@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as RadioGroupStories from "./radio-group.stories";
+
+<Meta of={RadioGroupStories} />
+
+# RadioGroup
+
+<Description of={RadioGroupStories} />
+
+<Canvas of={RadioGroupStories.Playground} />
+
+<Controls of={RadioGroupStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every radio group at once
+
+<Canvas of={RadioGroupStories.OverrideTokens} />
+
+### 2. `radioGroupVariants` / `radioVariants` / `radioBoxVariants` — style something that isn't a `RadioGroup`
+
+```tsx
+<div className={radioGroupVariants()} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<RadioGroup classNames={{ root: "gap-4" }}>
+  <Radio value="s" label="Small" classNames={{ box: "size-6" }} />
+</RadioGroup>
+```
+
+## FormField integration
+
+```tsx
+<FormField label="Size" error={errors.size}>
+  <RadioGroup>
+    <Radio value="s" label="Small" />
+    <Radio value="m" label="Medium" />
+  </RadioGroup>
+</FormField>
+```
+
+`FormField` clones `id`/`aria-invalid`/`aria-describedby`/`data-invalid` onto the `RadioGroup`
+root (`role="radiogroup"`), not onto individual `Radio` items — that's how a screen reader
+announces the group's error state without repeating it per option.

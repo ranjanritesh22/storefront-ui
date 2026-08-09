@@ -1,0 +1,48 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as IconStories from "./icon.stories";
+
+<Meta of={IconStories} />
+
+# Icon
+
+<Description of={IconStories} />
+
+<Canvas of={IconStories.Playground} />
+
+<Controls of={IconStories.Playground} />
+
+## Full catalog
+
+<Canvas of={IconStories.Catalog} />
+
+## Overriding this component
+
+### 1. One instance
+
+Anywhere a component exposes a `slots` prop, pass your own icon component. Otherwise, just
+render your own SVG/icon component instead of `<Icon>` — nothing requires routing through it.
+
+### 2. The whole set
+
+```ts
+// app/icons.ts — imported once for its side effect, e.g. at the top of app/layout.tsx
+import { configureIcons } from "@storefront/ui";
+import { ShoppingCart, Heart, Search, X } from "lucide-react";
+
+configureIcons({
+  cart: ShoppingCart,
+  heart: Heart,
+  search: Search,
+  close: X,
+});
+```
+
+Every built-in usage of `<Icon name="...">` inside this package — Dialog's close button,
+Select's chevron, Checkbox's check, ProductCard's wishlist heart, Rating's star, Pagination's
+and Breadcrumb's chevrons — picks up the replacement immediately, with no per-component prop.
+
+This is a module-level registry, not a React Context, on purpose: reading it is a plain object
+lookup, so `Icon` never needs a hook and every Server Component in this package (`Card`,
+`Badge`, `ProductCard`) can render one without becoming a Client Component. Configure it once
+per deployment/build; it is process-wide state, not per-request state — see the package
+CLAUDE.md's "Icons" rule for the multi-tenant caveat.

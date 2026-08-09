@@ -1,6 +1,8 @@
 import * as React from "react";
 import { cn } from "../../lib/cn";
 import { Button } from "../button/button";
+import { Icon } from "../icon/icon";
+import { getMessages } from "../../i18n/messages";
 import { paginationVariants, type PaginationVariantsProps } from "./pagination.variants";
 
 export type PaginationItemValue = number | "ellipsis";
@@ -87,18 +89,6 @@ function DefaultPaginationLink({ href, className, children, ...rest }: Paginatio
   );
 }
 
-function ChevronIcon({ direction }: { direction: "start" | "end" }) {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-4">
-      <path
-        d={direction === "start" ? "M12 4l-6 6 6 6" : "M8 4l6 6-6 6"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 /**
  * Data-driven page nav composed of `Button`s (or links, given `hrefFor`) — no
  * internal state, so it stays a Server Component (CLAUDE.md rule 2), same as
@@ -115,14 +105,15 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
       siblingCount = 1,
       onPageChange,
       hrefFor,
-      label = "Pagination",
-      prevLabel = "Previous page",
-      nextLabel = "Next page",
+      label,
+      prevLabel,
+      nextLabel,
       slots,
       ...props
     },
     ref,
   ) => {
+    const t = getMessages();
     const items = getPaginationItems(page, totalPages, siblingCount);
     const LinkSlot = slots?.Link ?? DefaultPaginationLink;
 
@@ -173,10 +164,20 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
     };
 
     return (
-      <nav ref={ref} aria-label={label} className={cn(classNames?.root, className)} {...props}>
+      <nav
+        ref={ref}
+        aria-label={label ?? t.pagination.nav}
+        className={cn(classNames?.root, className)}
+        {...props}
+      >
         <ul className={cn(paginationVariants({ size }), classNames?.list)}>
           <li className={classNames?.item}>
-            {renderPageControl(page - 1, <ChevronIcon direction="start" />, prevLabel, classNames?.prev)}
+            {renderPageControl(
+              page - 1,
+              <Icon name="chevron-left" />,
+              prevLabel ?? t.pagination.previous,
+              classNames?.prev,
+            )}
           </li>
           {items.map((item, index) =>
             item === "ellipsis" ? (
@@ -192,12 +193,17 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
               </li>
             ) : (
               <li key={item} className={classNames?.item}>
-                {renderPageControl(item, item, `Page ${item}`)}
+                {renderPageControl(item, item, t.pagination.page(item))}
               </li>
             ),
           )}
           <li className={classNames?.item}>
-            {renderPageControl(page + 1, <ChevronIcon direction="end" />, nextLabel, classNames?.next)}
+            {renderPageControl(
+              page + 1,
+              <Icon name="chevron-right" />,
+              nextLabel ?? t.pagination.next,
+              classNames?.next,
+            )}
           </li>
         </ul>
       </nav>

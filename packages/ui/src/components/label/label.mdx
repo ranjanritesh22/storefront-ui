@@ -1,0 +1,40 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as LabelStories from "./label.stories";
+
+<Meta of={LabelStories} />
+
+# Label
+
+<Description of={LabelStories} />
+
+<Canvas of={LabelStories.Playground} />
+
+<Controls of={LabelStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every label at once
+
+Override `--ui-color-foreground` / `--ui-color-danger` on `:root` or scoped under `[data-theme]`.
+
+### 2. `labelVariants` — style something that isn't a `Label`
+
+```tsx
+<span className={labelVariants()}>Email</span>
+```
+
+## Associating with a control
+
+<Canvas of={LabelStories.AssociatedWithInput} />
+
+Clicking the label focuses (and, for Checkbox/Switch/RadioGroup, activates) the control — this
+works even though those controls render as `<button>`, because Radix's `Label` forwards the
+click through `htmlFor` rather than relying only on native `<label>`/`<input>` pairing.
+
+## When to reach for this vs. `FormField`
+
+`FormField` renders its own label internally and is the right choice for a single control with a
+label/hint/error. Use `Label` directly when labelling something `FormField` doesn't fit — a bare
+control outside a form, or a heading-style label inside a `Fieldset`.

@@ -33,3 +33,17 @@ Override `--ui-color-primary`, `--ui-color-border` on `:root` or scoped under `[
 ```tsx
 <Checkbox classNames={{ box: "rounded-full" }} label="Nike" />
 ```
+
+## FormField integration
+
+`Checkbox` forwards `id`/`aria-invalid`/`aria-describedby`/`data-invalid` when nested in a
+`FormField`, same as every other control:
+
+```tsx
+<FormField label="Terms" error={errors.terms}>
+  <Checkbox label="I agree to the terms" />
+</FormField>
+```
+
+Standalone (no `FormField`), pass `invalid` directly to get the same `data-invalid`/`aria-invalid`
+styling hooks.

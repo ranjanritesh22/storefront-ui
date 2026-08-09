@@ -1,0 +1,96 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as FileUploadStories from "./file-upload.stories";
+
+<Meta of={FileUploadStories} />
+
+# FileUpload
+
+<Description of={FileUploadStories} />
+
+<Canvas of={FileUploadStories.Playground} />
+
+<Controls of={FileUploadStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every file upload at once
+
+Override `--ui-color-primary` / `--ui-color-border` / `--ui-color-danger` on `:root` or scoped
+under `[data-theme]`.
+
+### 2. `dropzoneVariants` / `fileRowVariants` — style something that isn't a `FileUpload`
+
+```tsx
+<label className={dropzoneVariants({ size: "sm" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<FileUpload classNames={{ dropzone: "border-solid" }} />
+```
+
+## Validation
+
+<Canvas of={FileUploadStories.WithValidation} />
+
+`maxSize` (bytes), `accept`, and `maxFiles` are enforced client-side on both drop and the native
+picker (the native `accept` attribute only filters the OS picker's own dialog, not drag-and-drop,
+so this component re-validates dropped files against it). A file that fails validation is still
+added to the list — with `status: "error"` and a reason — rather than silently discarded, so the
+shopper can see *why* it didn't go through.
+
+## Driving real upload progress
+
+`FileUpload` doesn't perform uploads itself — pass `files` + `onFilesChange` (controlled mode)
+and update each item's `progress`/`status` as your own `fetch`/`XMLHttpRequest` reports it:
+
+<Canvas of={FileUploadStories.UploadingWithProgress} />
+
+```tsx
+function ProductImageUpload() {
+  const [files, setFiles] = useState<FileUploadItem[]>([]);
+
+  async function upload(item: FileUploadItem) {
+    setFiles((prev) => prev.map((f) => (f.id === item.id ? { ...f, status: "uploading" } : f)));
+    // ...call your API, reporting progress via XMLHttpRequest's `upload.onprogress`,
+    // calling setFiles to patch that item's `progress` (0-100) as it comes in.
+  }
+
+  return (
+    <FileUpload
+      files={files}
+      onFilesChange={setFiles}
+      onFilesAdded={(added) => added.forEach(upload)}
+    />
+  );
+}
+```
+
+<Canvas of={FileUploadStories.WithError} />
+
+## Keyboard interaction
+
+- The dropzone is a native `<input type="file">` (visually hidden, not `display:none`) inside a
+  `<label>` — Tab focuses it and Enter/Space opens the OS file picker, for free, with no custom
+  code. Drag-and-drop is a mouse/touch enhancement on top of this, not a replacement.
+- Each file row's remove button uses roving `tabIndex`: only the active row is a Tab stop;
+  <kbd>↓</kbd>/<kbd>↑</kbd> move it between rows (wrapping at the ends), <kbd>Home</kbd>/<kbd>End</kbd>
+  jump to the first/last row, and <kbd>Delete</kbd>/<kbd>Backspace</kbd> remove the focused row
+  without leaving the keyboard.
+- A visually-hidden `role="status"` live region announces how many files were just accepted.
+
+## FormField integration
+
+```tsx
+<FormField label="Product images" hint="Up to 8 photos." error={errors.images}>
+  <FileUpload multiple maxFiles={8} accept="image/*" />
+</FormField>
+```
+
+`FormField` clones `id`/`aria-describedby`/`data-invalid` onto the `FileUpload` element; they're
+routed internally to the underlying `<input type="file">`. `className` (whether from `FormField`'s
+`classNames.control` or passed directly) reaches the dropzone box — the part that visually reads
+as this component's root.

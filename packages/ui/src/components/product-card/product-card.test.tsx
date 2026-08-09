@@ -1,10 +1,46 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { ProductCard } from "./product-card";
 import { Badge } from "../badge/badge";
+import { configureMessages, resetMessages } from "../../i18n/messages";
+import type { ProductSummary } from "../../types/product";
 
 describe("ProductCard", () => {
+  afterEach(() => {
+    resetMessages();
+  });
+
+  it("accepts a domain-agnostic `product` summary instead of individual props", () => {
+    const product: ProductSummary = {
+      id: "sku-1",
+      name: "Wireless headphones",
+      price: 79.99,
+      image: { src: "/img.jpg", alt: "Wireless headphones" },
+    };
+    render(<ProductCard product={product} />);
+    expect(screen.getByText("Wireless headphones")).toBeInTheDocument();
+    expect(screen.getByText("$79.99")).toBeInTheDocument();
+  });
+
+  it("lets an explicit prop win over the matching `product` field", () => {
+    const product: ProductSummary = {
+      id: "sku-1",
+      name: "Wireless headphones",
+      price: 79.99,
+      image: { src: "/img.jpg", alt: "Wireless headphones" },
+    };
+    render(<ProductCard product={product} title="Renamed headphones" />);
+    expect(screen.getByText("Renamed headphones")).toBeInTheDocument();
+    expect(screen.queryByText("Wireless headphones")).not.toBeInTheDocument();
+  });
+
+  it("reads its default copy from the message dictionary, translatable via configureMessages", () => {
+    configureMessages({ productCard: { addToCart: "In den Warenkorb" } });
+    render(<ProductCard title="Mug" imageSrc="/img.jpg" imageAlt="Mug" price={9.99} />);
+    expect(screen.getByRole("button", { name: "In den Warenkorb" })).toBeInTheDocument();
+  });
+
   it("composes our own Card, Price, and Button by default", () => {
     render(
       <ProductCard

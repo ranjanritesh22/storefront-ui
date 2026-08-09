@@ -1,0 +1,72 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as DatePickerStories from "./date-picker.stories";
+
+<Meta of={DatePickerStories} />
+
+# DatePicker
+
+<Description of={DatePickerStories} />
+
+<Canvas of={DatePickerStories.Playground} />
+
+<Controls of={DatePickerStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every date picker at once
+
+<Canvas of={DatePickerStories.OverrideTokens} />
+
+### 2. `datePickerTriggerVariants` / `datePickerContentVariants` / `datePickerDayVariants` — style something that isn't a `DatePicker`
+
+```tsx
+<button className={datePickerTriggerVariants({ size: "sm" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<DatePicker classNames={{ day: "rounded-full" }} />
+```
+
+## Bounding the selectable range
+
+<Canvas of={DatePickerStories.WithMinMax} />
+
+```tsx
+<DatePicker min={new Date()} max={addDays(new Date(), 14)} />
+```
+
+Out-of-range days render `data-disabled` and can't be focused via arrow-key navigation's normal
+flow (they're `disabled`, so clicking/activating them is a no-op); the month-navigation buttons
+also disable themselves once every day in the next/previous month would be out of range.
+
+## Keyboard interaction
+
+Built to the WAI-ARIA APG "Date Picker Dialog" grid pattern:
+
+- The trigger is a real `<button aria-haspopup="dialog">` — Tab reaches it, Enter/Space opens the
+  calendar.
+- The calendar is a `<table role="grid">`; only one day (the "focused" day — the selected day, or
+  today, or wherever arrow keys last landed) is a Tab stop at a time.
+- <kbd>←</kbd>/<kbd>→</kbd> move by day, <kbd>↑</kbd>/<kbd>↓</kbd> by week, <kbd>Home</kbd>/<kbd>End</kbd>
+  to the start/end of the row, <kbd>PageUp</kbd>/<kbd>PageDown</kbd> by month, and
+  <kbd>Shift+PageUp</kbd>/<kbd>Shift+PageDown</kbd> by year — crossing a month boundary re-renders
+  the grid and keeps keyboard focus on the newly-focused day.
+- <kbd>Enter</kbd>/<kbd>Space</kbd> selects the focused day and returns focus to the trigger.
+- A "Clear" button in the calendar footer gives keyboard users a way to clear the selection (the
+  compact "×" next to the trigger is a mouse-only shortcut for the same action, since it isn't
+  reachable by Tab).
+
+## FormField integration
+
+```tsx
+<FormField label="Delivery date" error={errors.deliveryDate}>
+  <DatePicker min={new Date()} />
+</FormField>
+```
+
+`FormField` clones `id`/`aria-invalid`/`aria-describedby`/`data-invalid` onto the trigger button —
+there's no editable text input for a `DatePicker` to route them to.

@@ -1,0 +1,40 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as SwitchStories from "./switch.stories";
+
+<Meta of={SwitchStories} />
+
+# Switch
+
+<Description of={SwitchStories} />
+
+<Canvas of={SwitchStories.Playground} />
+
+<Controls of={SwitchStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every switch at once
+
+<Canvas of={SwitchStories.OverrideTokens} />
+
+### 2. `switchVariants` / `switchTrackVariants` / `switchThumbVariants` — style something that isn't a `Switch`
+
+```tsx
+<span className={switchTrackVariants({ size: "sm" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<Switch classNames={{ track: "data-[state=checked]:bg-success" }} label="Notifications" />
+```
+
+## FormField integration
+
+```tsx
+<FormField label="Notifications" error={errors.notifications}>
+  <Switch />
+</FormField>
+```

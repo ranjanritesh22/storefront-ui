@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 
-/** Sizes the visible box; the native input stays full-size but visually hidden (sr-only). */
+/** Wraps the Radix `Root` (the focusable element) plus the optional label/description text. */
 export const checkboxVariants = cva(["inline-flex items-start gap-2 font-sans text-foreground"], {
   variants: {
     size: {
@@ -13,21 +13,29 @@ export const checkboxVariants = cva(["inline-flex items-start gap-2 font-sans te
   },
 });
 
+/**
+ * Styles the Radix `Checkbox.Root` itself — it renders as a `<button
+ * role="checkbox">` and is the focusable element, so state reads off its own
+ * `data-state`/`data-disabled` attributes rather than a sibling `peer-*`
+ * selector (there's no separate native input to peer against once the box
+ * itself owns focus).
+ */
 export const checkboxBoxVariants = cva(
   [
     "flex shrink-0 items-center justify-center border bg-surface text-primary-fg",
     "rounded-sm border-border",
     "transition-colors duration-[var(--ui-duration-base)] ease-[var(--ui-ease-standard)]",
-    "peer-checked:border-primary peer-checked:bg-primary",
-    "peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface",
-    "peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
-    "[&>svg]:opacity-0 peer-checked:[&>svg]:opacity-100",
+    "data-[state=checked]:border-primary data-[state=checked]:bg-primary",
+    "data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary",
+    "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
+    "disabled:cursor-not-allowed disabled:opacity-50",
+    "data-invalid:border-danger data-invalid:focus-visible:ring-danger",
   ],
   {
     variants: {
       size: {
-        sm: "mt-0.5 size-4 [&>svg]:size-3",
-        md: "mt-0.5 size-5 [&>svg]:size-3.5",
+        sm: "mt-0.5 size-4 [&_svg]:size-3",
+        md: "mt-0.5 size-5 [&_svg]:size-3.5",
       },
     },
     defaultVariants: {
