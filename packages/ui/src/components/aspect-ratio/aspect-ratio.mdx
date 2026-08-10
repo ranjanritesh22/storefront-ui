@@ -1,0 +1,20 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as AspectRatioStories from "./aspect-ratio.stories";
+
+<Meta of={AspectRatioStories} />
+
+# AspectRatio
+
+<Description of={AspectRatioStories} />
+
+<Canvas of={AspectRatioStories.Playground} />
+
+<Controls of={AspectRatioStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### Square
+
+<Canvas of={AspectRatioStories.Square} />

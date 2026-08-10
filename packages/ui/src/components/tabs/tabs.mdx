@@ -1,0 +1,22 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as TabsStories from "./tabs.stories";
+
+<Meta of={TabsStories} />
+
+# Tabs
+
+<Description of={TabsStories} />
+
+<Canvas of={TabsStories.Playground} />
+
+<Controls of={TabsStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### `tabsTriggerVariants` — style something that isn't a `TabsTrigger`
+
+```tsx
+<button className={tabsTriggerVariants()} />
+```

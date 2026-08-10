@@ -1,0 +1,26 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as StackStories from "./stack.stories";
+
+<Meta of={StackStories} />
+
+# Stack
+
+<Description of={StackStories} />
+
+<Canvas of={StackStories.Playground} />
+
+<Controls of={StackStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### Horizontal
+
+<Canvas of={StackStories.Horizontal} />
+
+### `stackVariants` — style something that isn't a `Stack`
+
+```tsx
+<ul className={stackVariants({ direction: "horizontal", gap: "sm" })} />
+```

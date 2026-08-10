@@ -1,0 +1,20 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as AccordionStories from "./accordion.stories";
+
+<Meta of={AccordionStories} />
+
+# Accordion
+
+<Description of={AccordionStories} />
+
+<Canvas of={AccordionStories.Playground} />
+
+<Controls of={AccordionStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### `type="multiple"`
+
+<Canvas of={AccordionStories.Multiple} />

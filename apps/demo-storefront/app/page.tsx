@@ -19,6 +19,11 @@ export default function Home() {
           <Link href="/plp" className={styles.link}>
             the Men&apos;s Shoes PLP
           </Link>
+          . Layout primitives and navigation components (Container, Grid, MegaMenu, MobileNav,
+          HeaderShell, FooterShell, and more) have their own showcase at{" "}
+          <Link href="/layout-nav" className={styles.link}>
+            Layout &amp; Navigation
+          </Link>
           .
         </p>
       </header>

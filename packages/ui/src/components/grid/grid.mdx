@@ -1,0 +1,26 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as GridStories from "./grid.stories";
+
+<Meta of={GridStories} />
+
+# Grid
+
+<Description of={GridStories} />
+
+<Canvas of={GridStories.Playground} />
+
+<Controls of={GridStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### PLP grid
+
+<Canvas of={GridStories.PLPGrid} />
+
+### `gridVariants` — style something that isn't a `Grid`
+
+```tsx
+<ul className={cn(gridVariants({ gap: "lg" }), "grid-cols-2 md:grid-cols-4")} />
+```

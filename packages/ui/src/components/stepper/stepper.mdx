@@ -1,0 +1,26 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as StepperStories from "./stepper.stories";
+
+<Meta of={StepperStories} />
+
+# Stepper
+
+<Description of={StepperStories} />
+
+<Canvas of={StepperStories.Playground} />
+
+<Controls of={StepperStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### Vertical
+
+<Canvas of={StepperStories.Vertical} />
+
+### `classNames` — reach a specific part
+
+```tsx
+<Stepper steps={steps} currentStep={2} classNames={{ indicator: "size-10" }} />
+```

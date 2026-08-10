@@ -1,0 +1,22 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as SkipLinkStories from "./skip-link.stories";
+
+<Meta of={SkipLinkStories} />
+
+# SkipLink
+
+<Description of={SkipLinkStories} />
+
+<Canvas of={SkipLinkStories.Playground} />
+
+<Controls of={SkipLinkStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### i18n
+
+```tsx
+configureMessages({ skipLink: { label: "Aller au contenu" } });
+```

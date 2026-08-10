@@ -1,0 +1,26 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ContainerStories from "./container.stories";
+
+<Meta of={ContainerStories} />
+
+# Container
+
+<Description of={ContainerStories} />
+
+<Canvas of={ContainerStories.Playground} />
+
+<Controls of={ContainerStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### Sizes
+
+<Canvas of={ContainerStories.Sizes} />
+
+### `containerVariants` — style something that isn't a `Container`
+
+```tsx
+<section className={containerVariants({ size: "lg" })} />
+```

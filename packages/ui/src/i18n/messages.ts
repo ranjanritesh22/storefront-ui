@@ -1,3 +1,5 @@
+import type * as React from "react";
+
 /**
  * English default copy for every user-facing string this package renders,
  * namespaced by component. No component may hardcode a string a shopper
@@ -120,6 +122,54 @@ export interface StorefrontMessages {
     /** Label on the retry button. */
     retry: string;
   };
+  stepper: {
+    /** aria-label on the step list container. */
+    nav: string;
+    /** Screen-reader-only status word for a finished step. */
+    completed: string;
+    /** Screen-reader-only status word for the active step. */
+    current: string;
+    /** Screen-reader-only status word for a step not yet reached. */
+    upcoming: string;
+    /** Full per-step aria-label, e.g. "Step 2 of 4: Shipping, current". */
+    step: (args: { index: number; total: number; label: React.ReactNode; status: string }) => string;
+  };
+  navMenu: {
+    /** aria-label on the <nav>. */
+    nav: string;
+  };
+  megaMenu: {
+    /** aria-label on the <nav>. */
+    nav: string;
+  };
+  mobileNav: {
+    /** aria-label on the trigger button that opens the drawer. */
+    open: string;
+    /** aria-label on the trigger button that closes the drawer. */
+    close: string;
+    /** aria-label on the back button, receives the parent category label. */
+    back: (categoryLabel: React.ReactNode) => string;
+    /** aria-label on the <nav> inside the drawer. */
+    nav: string;
+  };
+  languageCurrencySelector: {
+    /** aria-label on the trigger when no custom label is given. */
+    trigger: string;
+    language: string;
+    currency: string;
+  };
+  storeSelector: {
+    /** aria-label on the trigger when no custom label is given. */
+    trigger: string;
+    /** Label on the button that selects a store. */
+    selectStore: string;
+    /** Shown next to the currently selected store. */
+    selected: string;
+  };
+  skipLink: {
+    /** Default link text when no `children` is given. */
+    label: string;
+  };
 }
 
 export const defaultMessages: StorefrontMessages = {
@@ -204,6 +254,38 @@ export const defaultMessages: StorefrontMessages = {
     title: "Something went wrong",
     description: "We couldn't load this content. Please try again.",
     retry: "Try again",
+  },
+  stepper: {
+    nav: "Progress",
+    completed: "completed",
+    current: "current",
+    upcoming: "upcoming",
+    step: ({ index, total, label, status }) => `Step ${index} of ${total}: ${label}, ${status}`,
+  },
+  navMenu: {
+    nav: "Main",
+  },
+  megaMenu: {
+    nav: "Main",
+  },
+  mobileNav: {
+    open: "Open menu",
+    close: "Close menu",
+    back: (categoryLabel) => `Back to ${categoryLabel}`,
+    nav: "Main",
+  },
+  languageCurrencySelector: {
+    trigger: "Language and currency",
+    language: "Language",
+    currency: "Currency",
+  },
+  storeSelector: {
+    trigger: "Choose store",
+    selectStore: "Select this store",
+    selected: "Selected",
+  },
+  skipLink: {
+    label: "Skip to main content",
   },
 };
 

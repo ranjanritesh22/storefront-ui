@@ -70,4 +70,96 @@
       transform: translateX(250%);
     }
   }
+
+  /**
+   * Referenced by Accordion's content open/close animation
+   * (accordion.variants.ts) via `--radix-accordion-content-height`, the
+   * CSS variable Radix sets to the panel's measured height so a `height:
+   * auto` transition — otherwise impossible in CSS — can be faked.
+   */
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  /**
+   * Referenced by NavMenu/MegaMenu's content and viewport transitions
+   * (nav-menu.variants.ts, mega-menu.variants.ts) via the
+   * `data-motion`/`data-state` attributes Radix's NavigationMenu sets, and
+   * via `--radix-navigation-menu-viewport-{width,height}`, the size Radix
+   * measures for the active panel so the viewport can resize without layout
+   * shift when a wider/taller panel opens.
+   */
+  @keyframes nav-menu-enter-from-left {
+    from {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes nav-menu-enter-from-right {
+    from {
+      opacity: 0;
+      transform: translateX(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes nav-menu-exit-to-left {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+  }
+  @keyframes nav-menu-exit-to-right {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(8px);
+    }
+  }
+  @keyframes nav-menu-viewport-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes nav-menu-viewport-out {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
 }

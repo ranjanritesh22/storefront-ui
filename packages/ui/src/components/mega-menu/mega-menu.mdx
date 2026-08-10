@@ -1,0 +1,22 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as MegaMenuStories from "./mega-menu.stories";
+
+<Meta of={MegaMenuStories} />
+
+# MegaMenu
+
+<Description of={MegaMenuStories} />
+
+<Canvas of={MegaMenuStories.Playground} />
+
+<Controls of={MegaMenuStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### `classNames` — reach a specific part
+
+```tsx
+<MegaMenu items={items} classNames={{ content: "w-full" }} />
+```

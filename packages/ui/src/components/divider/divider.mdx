@@ -1,0 +1,20 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as DividerStories from "./divider.stories";
+
+<Meta of={DividerStories} />
+
+# Divider
+
+<Description of={DividerStories} />
+
+<Canvas of={DividerStories.Playground} />
+
+<Controls of={DividerStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### Vertical
+
+<Canvas of={DividerStories.Vertical} />

@@ -1,0 +1,22 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ScrollAreaStories from "./scroll-area.stories";
+
+<Meta of={ScrollAreaStories} />
+
+# ScrollArea
+
+<Description of={ScrollAreaStories} />
+
+<Canvas of={ScrollAreaStories.Playground} />
+
+<Controls of={ScrollAreaStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### `classNames` — reach a specific part
+
+```tsx
+<ScrollArea classNames={{ thumb: "bg-primary" }} />
+```

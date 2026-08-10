@@ -342,6 +342,23 @@ export const FileIcon = strokeIcon(
     <path d="M14 2.5V8h6" />
   </>,
 );
+export const GlobeIcon = strokeIcon(
+  "0 0 24 24",
+  1.75,
+  <>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18" />
+    <path d="M12 3c2.5 2.5 3.75 5.75 3.75 9S14.5 18.5 12 21c-2.5-2.5-3.75-5.75-3.75-9S9.5 5.5 12 3z" />
+  </>,
+);
+export const MapPinIcon = strokeIcon(
+  "0 0 24 24",
+  1.75,
+  <>
+    <path d="M12 21s7-6.6 7-12A7 7 0 0 0 5 9c0 5.4 7 12 7 12z" />
+    <circle cx="12" cy="9" r="2.5" />
+  </>,
+);
 
 /**
  * The default ~40-icon catalog, keyed by name. `Icon` looks glyphs up here;
@@ -393,6 +410,8 @@ export const defaultIcons = {
   calendar: CalendarIcon,
   upload: UploadIcon,
   file: FileIcon,
+  globe: GlobeIcon,
+  "map-pin": MapPinIcon,
 } satisfies Record<string, IconGlyph>;
 
 export type IconName = keyof typeof defaultIcons;
