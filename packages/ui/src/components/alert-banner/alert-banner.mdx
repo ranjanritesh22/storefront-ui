@@ -1,0 +1,46 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as AlertBannerStories from "./alert-banner.stories";
+
+<Meta of={AlertBannerStories} />
+
+# AlertBanner
+
+<Description of={AlertBannerStories} />
+
+<Canvas of={AlertBannerStories.Playground} />
+
+<Controls of={AlertBannerStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every banner at once
+
+`--ui-color-success`, `--ui-color-warning`, `--ui-color-danger`, `--ui-color-primary`.
+
+### 2. `alertBannerVariants` / `alertBannerIconVariants` — style something that isn't an `AlertBanner`
+
+Both exported publicly.
+
+### 3. `classNames` — reach a specific part
+
+<Canvas of={AlertBannerStories.OverrideClassNames} />
+
+## All variants
+
+<Canvas of={AlertBannerStories.AllVariants} />
+
+## Dismissible
+
+<Canvas of={AlertBannerStories.Dismissible} />
+
+## With an action
+
+<Canvas of={AlertBannerStories.WithAction} />
+
+## AlertBanner vs. Toast
+
+- **AlertBanner** — persistent, page-level, no auto-dismiss. A promo, a maintenance notice, a
+  form-level error summary.
+- **Toast** — transient, queued, auto-dismisses. A one-off confirmation after an action.

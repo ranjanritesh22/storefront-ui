@@ -51,4 +51,23 @@
 
 @layer ui-components {
   /* Component styles land here as components are added under src/components/*. */
+
+  /**
+   * Referenced by ProgressBar's `indeterminate` fill via an arbitrary
+   * `animate-[progress-indeterminate_...]` utility (progress-bar.variants.ts)
+   * — a value-driven `width` transition can't express "duration unknown",
+   * so the indeterminate state slides a fixed-width bar across the track
+   * instead.
+   */
+  @keyframes progress-indeterminate {
+    0% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(20%);
+    }
+    100% {
+      transform: translateX(250%);
+    }
+  }
 }

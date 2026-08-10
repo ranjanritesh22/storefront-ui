@@ -1,0 +1,31 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as SpinnerStories from "./spinner.stories";
+
+<Meta of={SpinnerStories} />
+
+# Spinner
+
+<Description of={SpinnerStories} />
+
+<Canvas of={SpinnerStories.Playground} />
+
+<Controls of={SpinnerStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### Sizes
+
+<Canvas of={SpinnerStories.Sizes} />
+
+### Tones
+
+<Canvas of={SpinnerStories.Tones} />
+
+## Spinner vs. Skeleton
+
+- **Spinner** — indeterminate wait with no known shape yet (a button submitting, a page
+  navigating).
+- **Skeleton** — the eventual content's rough shape is already known (a product grid about to
+  render N cards).

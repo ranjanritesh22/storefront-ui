@@ -1,0 +1,36 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as TooltipStories from "./tooltip.stories";
+
+<Meta of={TooltipStories} />
+
+# Tooltip
+
+<Description of={TooltipStories} />
+
+<Canvas of={TooltipStories.Playground} />
+
+<Controls of={TooltipStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every tooltip at once
+
+`--ui-color-foreground`, `--ui-color-surface`, `--ui-shadow-md` on `:root` or scoped under
+`[data-theme]` / `[data-brand]`.
+
+### 2. `tooltipContentVariants` / `tooltipArrowVariants` — style something that isn't a `Tooltip`
+
+Both exported publicly.
+
+### 3. `classNames` on `TooltipContent` — reach a specific part
+
+<Canvas of={TooltipStories.OverrideClassNames} />
+
+## Accessibility
+
+Radix opens the tooltip instantly on keyboard focus (no hover delay), and closes it on blur,
+Escape, or scroll. Because of that, a tooltip must only ever *supplement* an already-accessible
+control — an icon button needs its own `aria-label` regardless of whether a `Tooltip` is attached,
+since screen reader users may never trigger the tooltip's hover/focus state in the same way.

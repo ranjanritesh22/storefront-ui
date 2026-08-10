@@ -92,6 +92,34 @@ export interface StorefrontMessages {
     /** aria-label on the clear button. */
     clear: string;
   };
+  drawer: {
+    /** aria-label on the default close button. */
+    close: string;
+  };
+  toast: {
+    /** aria-label on a toast's dismiss button. */
+    close: string;
+    /** aria-label on the `Toaster` viewport region. */
+    region: string;
+  };
+  alertBanner: {
+    /** aria-label on the dismiss button. */
+    dismiss: string;
+  };
+  spinner: {
+    /** Accessible text announced while a `Spinner` is visible. */
+    loading: string;
+  };
+  progressBar: {
+    /** aria-label fallback when no `label` prop is given. */
+    label: string;
+  };
+  errorState: {
+    title: string;
+    description: string;
+    /** Label on the retry button. */
+    retry: string;
+  };
 }
 
 export const defaultMessages: StorefrontMessages = {
@@ -155,6 +183,27 @@ export const defaultMessages: StorefrontMessages = {
     previousMonth: "Previous month",
     nextMonth: "Next month",
     clear: "Clear date",
+  },
+  drawer: {
+    close: "Close",
+  },
+  toast: {
+    close: "Dismiss notification",
+    region: "Notifications",
+  },
+  alertBanner: {
+    dismiss: "Dismiss",
+  },
+  spinner: {
+    loading: "Loading",
+  },
+  progressBar: {
+    label: "Progress",
+  },
+  errorState: {
+    title: "Something went wrong",
+    description: "We couldn't load this content. Please try again.",
+    retry: "Try again",
   },
 };
 

@@ -1,0 +1,45 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ProgressBarStories from "./progress-bar.stories";
+
+<Meta of={ProgressBarStories} />
+
+# ProgressBar
+
+<Description of={ProgressBarStories} />
+
+<Canvas of={ProgressBarStories.Playground} />
+
+<Controls of={ProgressBarStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every progress bar at once
+
+`--ui-color-primary`, `--ui-color-success`, `--ui-color-warning`, `--ui-color-danger`,
+`--ui-color-surface-raised`.
+
+### 2. `progressBarTrackVariants` / `progressBarFillVariants` — style something that isn't a `ProgressBar`
+
+Both exported publicly.
+
+### 3. `classNames` — reach a specific part
+
+<Canvas of={ProgressBarStories.OverrideClassNames} />
+
+## Sizes
+
+<Canvas of={ProgressBarStories.Sizes} />
+
+## Tones
+
+<Canvas of={ProgressBarStories.Tones} />
+
+## Indeterminate
+
+<Canvas of={ProgressBarStories.Indeterminate} />
+
+Uses a `progress-indeterminate` keyframe animation declared once in `styles/index.css`'s
+`ui-components` layer — a value-driven `width` transition can't express "duration unknown", so
+indeterminate mode slides a fixed-width bar across the track instead.

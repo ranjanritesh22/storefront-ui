@@ -1,0 +1,39 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as PopoverStories from "./popover.stories";
+
+<Meta of={PopoverStories} />
+
+# Popover
+
+<Description of={PopoverStories} />
+
+<Canvas of={PopoverStories.Playground} />
+
+<Controls of={PopoverStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every popover at once
+
+`--ui-color-border`, `--ui-color-surface`, `--ui-shadow-md` on `:root` or scoped under
+`[data-theme]` / `[data-brand]`.
+
+### 2. `popoverContentVariants` / `popoverArrowVariants` — style something that isn't a `Popover`
+
+Both exported publicly.
+
+### 3. `classNames` on `PopoverContent` — reach a specific part
+
+<Canvas of={PopoverStories.OverrideClassNames} />
+
+### 4. `asChild` — swap the rendered trigger element
+
+`PopoverTrigger`/`PopoverClose` support it natively (inherited from Radix).
+
+## Popover vs. Dialog vs. Tooltip
+
+- **Popover** — non-modal, no focus trap, no backdrop. Filters, a details flyout, a mini form.
+- **Dialog** — modal, traps focus, renders a backdrop. Confirmations, forms that block the page.
+- **Tooltip** — no focus at all, opens on hover/focus, disappears on blur. A one-line hint.

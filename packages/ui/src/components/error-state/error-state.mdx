@@ -1,0 +1,48 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ErrorStateStories from "./error-state.stories";
+
+<Meta of={ErrorStateStories} />
+
+# ErrorState
+
+<Description of={ErrorStateStories} />
+
+<Canvas of={ErrorStateStories.Playground} />
+
+<Controls of={ErrorStateStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every error state at once
+
+`--ui-color-danger`.
+
+### 2. `errorStateVariants` / `errorStateIconVariants` — style something that isn't an `ErrorState`
+
+Both exported publicly.
+
+### 3. `classNames` — reach a specific part
+
+<Canvas of={ErrorStateStories.OverrideClassNames} />
+
+### 4. `configureMessages` — reword the default copy everywhere
+
+```ts
+configureMessages({
+  errorState: { title: "Unable to load", retry: "Retry" },
+});
+```
+
+## Custom copy per instance
+
+<Canvas of={ErrorStateStories.CustomCopy} />
+
+## No retry action
+
+<Canvas of={ErrorStateStories.NoRetry} />
+
+## ErrorState vs. EmptyState
+
+See [EmptyState](../empty-state/empty-state.mdx#emptystate-vs-errorstate).

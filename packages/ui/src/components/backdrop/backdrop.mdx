@@ -1,0 +1,40 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as BackdropStories from "./backdrop.stories";
+
+<Meta of={BackdropStories} />
+
+# Backdrop
+
+<Description of={BackdropStories} />
+
+<Canvas of={BackdropStories.Playground} />
+
+<Controls of={BackdropStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every backdrop at once
+
+`--ui-color-overlay`.
+
+### 2. `backdropVariants` — style something that isn't a `Backdrop`
+
+Exported publicly.
+
+## Click to dismiss
+
+<Canvas of={BackdropStories.ClickToDismiss} />
+
+## Loading overlay
+
+<Canvas of={BackdropStories.LoadingOverlay} />
+
+## When to reach for this instead of Dialog/Drawer
+
+`Dialog` and `Drawer` already render their own overlay (`DialogOverlay`/`DrawerOverlay`) as part
+of their Radix-backed open/close lifecycle — don't pair `Backdrop` with either. Reach for
+`Backdrop` directly only for a custom surface that isn't a Radix Dialog at all, most commonly a
+section-level loading overlay (see above) or a bespoke non-modal panel that still needs to dim the
+page behind it.

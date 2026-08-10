@@ -238,6 +238,14 @@ export const InfoIcon = strokeIcon(
     <circle cx="12" cy="7.75" r="0.1" fill="currentColor" stroke="currentColor" strokeWidth="2" />
   </>,
 );
+export const CheckCircleIcon = strokeIcon(
+  "0 0 24 24",
+  1.75,
+  <>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M8.5 12.5l2.3 2.3 4.7-5.3" />
+  </>,
+);
 export const EyeIcon = strokeIcon(
   "0 0 24 24",
   1.75,
@@ -372,6 +380,7 @@ export const defaultIcons = {
   "alert-circle": AlertCircleIcon,
   "alert-triangle": AlertTriangleIcon,
   info: InfoIcon,
+  "check-circle": CheckCircleIcon,
   spinner: SpinnerIcon,
   eye: EyeIcon,
   "eye-off": EyeOffIcon,

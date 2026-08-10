@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as EmptyStateStories from "./empty-state.stories";
+
+<Meta of={EmptyStateStories} />
+
+# EmptyState
+
+<Description of={EmptyStateStories} />
+
+<Canvas of={EmptyStateStories.Playground} />
+
+<Controls of={EmptyStateStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every empty state at once
+
+`--ui-color-foreground-muted`.
+
+### 2. `emptyStateVariants` / `emptyStateIconVariants` — style something that isn't an `EmptyState`
+
+Both exported publicly.
+
+### 3. `classNames` — reach a specific part
+
+<Canvas of={EmptyStateStories.OverrideClassNames} />
+
+## Examples
+
+<Canvas of={EmptyStateStories.EmptyCart} />
+
+<Canvas of={EmptyStateStories.NoIcon} />
+
+## EmptyState vs. ErrorState
+
+- **EmptyState** — the request succeeded; there's just nothing to show. Icon is always
+  consumer-supplied since the right glyph depends on context.
+- **ErrorState** — the request failed. Always means the same thing, so it renders its own default
+  icon, title, description, and retry action — see [ErrorState](../error-state/error-state.mdx).

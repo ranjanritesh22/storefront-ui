@@ -1,0 +1,61 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ToastStories from "./toast.stories";
+
+<Meta of={ToastStories} />
+
+# Toast
+
+<Description of={ToastStories} />
+
+<Canvas of={ToastStories.Playground} />
+
+<Controls of={ToastStories.Playground} />
+
+## Triggering a toast from plain application code
+
+```ts
+import { toast } from "@storefront/ui";
+
+toast({ title: "Added to cart", description: "Running shoes, size 10" });
+toast({ title: "Order confirmed", variant: "success" });
+toast({
+  title: "Item removed",
+  action: { label: "Undo", onClick: () => restoreItem() },
+});
+```
+
+No React import needed at the call site — `toast()` is a plain function that pushes onto a
+module-level queue. `useToast()` is the hook a component would use to *read* that queue (it's
+what `Toaster` calls internally); most consumers only ever need `toast()` itself.
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every toast at once
+
+`--ui-color-border`, `--ui-color-success`, `--ui-color-warning`, `--ui-color-danger`, `--ui-shadow-lg`.
+
+### 2. `toastVariants` / `toastViewportVariants` / `toastIconVariants` — style something that isn't a `Toast`
+
+All exported publicly.
+
+### 3. `classNames` on `Toaster` — reach a specific part, on every toast it renders
+
+<Canvas of={ToastStories.OverrideClassNames} />
+
+### 4. Composition — hand-roll a custom viewport
+
+`Toast` / `ToastTitle` / `ToastDescription` / `ToastAction` are exported individually for a
+consumer who wants different markup than `Toaster`'s default stack (e.g. grouped by variant, or
+positioned per design instead of a single fixed viewport).
+
+## Queue and auto-dismiss
+
+<Canvas of={ToastStories.Queueing} />
+
+At most 4 toasts render at once — a 5th push drops the oldest. Each toast auto-dismisses after
+`duration` (default 5000ms); pass `duration: Infinity` for a toast that requires the user to
+dismiss it (e.g. one carrying a critical error with no other way to recover). Passing the same
+`id` to a later `toast()` call updates that toast in place instead of enqueuing a new one — useful
+for a progress toast that transitions to a completion state.

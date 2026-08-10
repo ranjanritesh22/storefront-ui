@@ -1,0 +1,39 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as DropdownMenuStories from "./dropdown-menu.stories";
+
+<Meta of={DropdownMenuStories} />
+
+# DropdownMenu
+
+<Description of={DropdownMenuStories} />
+
+<Canvas of={DropdownMenuStories.Playground} />
+
+<Controls of={DropdownMenuStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every menu at once
+
+`--ui-color-border`, `--ui-color-surface`, `--ui-color-danger`, `--ui-shadow-md` on `:root` or
+scoped under `[data-theme]` / `[data-brand]`.
+
+### 2. `dropdownMenuContentVariants` / `dropdownMenuItemVariants` — style something that isn't a `DropdownMenu`
+
+Both exported publicly.
+
+### 3. `className` — reach a specific part
+
+<Canvas of={DropdownMenuStories.OverrideClassNames} />
+
+## Checkbox and radio items
+
+<Canvas of={DropdownMenuStories.CheckboxAndRadioItems} />
+
+## Submenus
+
+`DropdownMenuSub` / `DropdownMenuSubTrigger` / `DropdownMenuSubContent` nest a second-level menu
+off any item — see "Move to collection" in the playground above. The submenu opens on hover or
+`ArrowRight` and closes on `ArrowLeft`, matching native OS menu behavior.

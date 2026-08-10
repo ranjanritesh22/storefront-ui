@@ -1,0 +1,54 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as SkeletonStories from "./skeleton.stories";
+
+<Meta of={SkeletonStories} />
+
+# Skeleton
+
+<Description of={SkeletonStories} />
+
+<Canvas of={SkeletonStories.Playground} />
+
+<Controls of={SkeletonStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every skeleton at once
+
+`--ui-color-surface-raised`.
+
+### 2. `skeletonVariants` — style something that isn't a `Skeleton`
+
+Exported publicly.
+
+## Shapes
+
+<Canvas of={SkeletonStories.Shapes} />
+
+## `SkeletonText`
+
+<Canvas of={SkeletonStories.Text} />
+
+## Building a per-component skeleton
+
+There's no `ProductCardSkeleton` shipped in this package — a skeleton's shape is specific to one
+component's real layout, so the composable pattern is to stack plain `Skeleton` primitives
+yourself, matching the real component's structure one piece at a time:
+
+<Canvas of={SkeletonStories.ComposedProductCardSkeleton} />
+
+```tsx
+function ProductCardSkeleton() {
+  return (
+    <div className="w-64 rounded-lg border border-border p-3">
+      <Skeleton shape="rect" className="h-40 w-full" />
+      <div className="mt-3 flex flex-col gap-2">
+        <Skeleton shape="text" className="w-3/4" />
+        <Skeleton shape="text" className="w-1/2" />
+      </div>
+    </div>
+  );
+}
+```

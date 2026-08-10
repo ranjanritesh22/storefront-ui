@@ -1,0 +1,40 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as DrawerStories from "./drawer.stories";
+
+<Meta of={DrawerStories} />
+
+# Drawer
+
+<Description of={DrawerStories} />
+
+<Canvas of={DrawerStories.Playground} />
+
+<Controls of={DrawerStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every drawer at once
+
+`--ui-color-overlay`, `--ui-color-surface`, `--ui-color-border`, `--ui-shadow-lg`.
+
+### 2. `drawerOverlayVariants` / `drawerContentVariants` — style something that isn't a `Drawer`
+
+Both exported publicly.
+
+### 3. `classNames` on `DrawerContent` — reach a specific part
+
+<Canvas of={DrawerStories.OverrideClassNames} />
+
+### 4. `asChild` — swap the rendered trigger element
+
+`DrawerTrigger`/`DrawerClose` support it natively (inherited from Radix).
+
+## All four edges
+
+<Canvas of={DrawerStories.AllSides} />
+
+`side="start"` / `side="end"` are logical — in a `dir="rtl"` tree, a `"start"` drawer opens from
+the right and slides off to the right, mirroring `"end"` in LTR. `side="top"` / `side="bottom"`
+have no inline-axis equivalent and stay physical.
