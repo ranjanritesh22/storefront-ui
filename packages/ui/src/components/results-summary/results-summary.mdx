@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ResultsSummaryStories from "./results-summary.stories";
+
+<Meta of={ResultsSummaryStories} />
+
+# ResultsSummary
+
+<Description of={ResultsSummaryStories} />
+
+<Canvas of={ResultsSummaryStories.Playground} />
+
+<Controls of={ResultsSummaryStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every results summary at once
+
+<Canvas of={ResultsSummaryStories.OverrideTokens} />
+
+### 2. `resultsSummaryVariants` — the text size
+
+```tsx
+<p className={resultsSummaryVariants({ size: "sm" })}>Showing 1–12 of 240</p>
+```
+
+### 3. `classNames` — reach a specific part
+
+A slot map: `root` (the `<p>`), `text` (the inner `<span>` wrapping the message).
+
+## Why the whole sentence is one i18n function, not a template
+
+`ResultsSummary` never assembles the "Showing X–Y of Z" string itself — it calls
+`t.resultsSummary.showing({ start, end, total })` and renders whatever comes back
+(CLAUDE.md rule 12). A function, not a `{start}`-style string template, is what lets a locale
+reorder the words around the numbers, not just swap them in:
+
+```tsx
+configureMessages({
+  resultsSummary: {
+    showing: ({ start, end, total }) => `${total} Ergebnisse, ${start}–${end} angezeigt`,
+  },
+});
+```
+
+## No results
+
+<Canvas of={ResultsSummaryStories.NoResults} />
+
+When `total` is `0`, a distinct `resultsSummary.noResults` message renders instead of
+"Showing 0–0 of 0".

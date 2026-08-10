@@ -1,0 +1,75 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as RatingStarsStories from "./rating-stars.stories";
+
+<Meta of={RatingStarsStories} />
+
+# RatingStars
+
+<Description of={RatingStarsStories} />
+
+<Canvas of={RatingStarsStories.Playground} />
+
+<Controls of={RatingStarsStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every rating stars at once
+
+<Canvas of={RatingStarsStories.OverrideTokens} />
+
+### 2. `ratingStarsVariants` / `ratingStarButtonVariants` — style something that isn't a `RatingStars`
+
+```tsx
+<div className={ratingStarsVariants({ size: "sm" })}>...</div>
+```
+
+### 3. `classNames` — reach a specific part
+
+A slot map: `root`, `star`.
+
+## `RatingStars` vs. `Rating`
+
+This package already ships `Rating` — a display-only star rating used inside `ProductCard` for
+"4.5 (1.2k)"-style summaries. `RatingStars` is a separate component, not a replacement: it adds
+an interactive picker mode for star-rating *input* (e.g. "Rate this product" in a review form),
+which `Rating` deliberately doesn't have (it stays a Server Component with zero interaction).
+Use `Rating` for display next to a product; use `RatingStars` wherever a shopper picks a rating.
+
+## Interactive mode (default)
+
+Always controlled — pass `value` and `onValueChange`, the same pattern as `Select`:
+
+```tsx
+const [rating, setRating] = useState(0);
+
+<RatingStars value={rating} onValueChange={setRating} label="Your rating" />
+```
+
+Hovering a star previews it visually without calling `onValueChange`; the value only commits on
+click, <kbd>Enter</kbd>, or <kbd>Space</kbd> — or via the arrow keys below, which move and commit
+together (matching native `<input type="radio">` group behavior).
+
+### Keyboard interaction
+
+A hand-rolled `role="radiogroup"` of `role="radio"` stars with roving tabindex — only the star
+matching the current value is a tab stop:
+
+- <kbd>→</kbd>/<kbd>↑</kbd> increases the value by one star.
+- <kbd>←</kbd>/<kbd>↓</kbd> decreases the value by one star.
+- <kbd>Home</kbd>/<kbd>End</kbd> jump to `1`/`max`.
+- Each star carries its own `aria-label` ("Rate 3 out of 5 stars").
+
+## Read-only mode
+
+<Canvas of={RatingStarsStories.ReadOnly} />
+
+```tsx
+<RatingStars value={4.5} readOnly />
+```
+
+Renders a static `role="img"` with a single descriptive `aria-label` — no buttons, nothing
+focusable. Fractional values (e.g. `4.5`) render a partially filled star via the same clipped-
+overlay technique as `Rating`, reimplemented here as this component's own logic rather than a
+shared import (CLAUDE.md: `RatingStars` doesn't modify or depend on `Rating`).

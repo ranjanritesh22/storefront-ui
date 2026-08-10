@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { ProductCard } from "./product-card";
+import { ProductCard, ProductCardSkeleton } from "./product-card";
 import { Badge } from "../badge/badge";
 
 const PLACEHOLDER_IMAGE =
@@ -55,6 +55,7 @@ ARCHITECTURE.md §4. Props are domain-agnostic (\`title\`, \`price\`, \`imageSrc
   },
   argTypes: {
     aspect: { control: "select", options: ["square", "portrait", "landscape"] },
+    orientation: { control: "select", options: ["vertical", "horizontal"] },
   },
   args: {
     title: "Wireless headphones",
@@ -97,6 +98,44 @@ export const WithRatingAndWishlist: Story = {
     badgeLabel: "10% OFF",
   },
   render: (args) => <WishlistDemo {...args} />,
+};
+
+export const WithQuickViewAndSwatches: Story = {
+  args: {
+    swatches: [
+      { id: "black", label: "Black", color: "#111111" },
+      { id: "white", label: "White", color: "#ffffff" },
+      { id: "red", label: "Red", color: "#b91c1c" },
+    ],
+    selectedSwatchId: "black",
+  },
+  render: (args) => (
+    <div className="w-72">
+      <ProductCard {...args} onQuickView={() => {}} />
+    </div>
+  ),
+};
+
+export const HorizontalListLayout: Story = {
+  args: { orientation: "horizontal", subtitle: "Men's Shoes", rating: 4.5, ratingCount: 128 },
+  render: (args) => (
+    <div className="w-full max-w-xl">
+      <ProductCard {...args} />
+    </div>
+  ),
+};
+
+export const LoadingSkeleton: Story = {
+  render: (args) => (
+    <div className="flex w-full max-w-3xl flex-wrap gap-6">
+      <div className="w-56">
+        <ProductCardSkeleton aspect={args.aspect} />
+      </div>
+      <div className="w-full max-w-xs">
+        <ProductCardSkeleton orientation="horizontal" />
+      </div>
+    </div>
+  ),
 };
 
 export const AsLinkCard: Story = {

@@ -1,0 +1,91 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as MobileFilterDrawerStories from "./mobile-filter-drawer.stories";
+
+<Meta of={MobileFilterDrawerStories} />
+
+# MobileFilterDrawer
+
+<Description of={MobileFilterDrawerStories} />
+
+<Canvas of={MobileFilterDrawerStories.Playground} />
+
+<Controls of={MobileFilterDrawerStories.Playground} />
+
+<Canvas of={MobileFilterDrawerStories.WithResultCountAndClearAll} />
+
+<Canvas of={MobileFilterDrawerStories.ControlledOpenState} />
+
+Both open-state modes work exactly as they do on `Drawer` itself: pass `trigger` for the
+uncontrolled case (a `Button`, wrapped internally in `DrawerTrigger asChild`), or own `open` /
+`onOpenChange` yourself and drive the drawer from elsewhere in your page.
+
+## Overriding this component
+
+The same `MobileFilterDrawer`, styled three different ways — cheapest override layer first. Full
+model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens
+
+Everything `Drawer`, `FacetPanel`, and `Button` already read.
+
+### 2. `mobileFilterDrawerBodyVariants`
+
+Exported publicly (the body wrapper around `FacetPanel`).
+
+### 3. `classNames` — reach a specific part
+
+A slot map: `overlay`, `content`, `header`, `body`, `footer`, `clearButton`, `applyButton`, and
+`panel` (forwarded straight through to the nested `FacetPanel`'s own `classNames`).
+
+<Canvas of={MobileFilterDrawerStories.OverrideClassNames} />
+
+### 4. `slots` — replace one part, keep the rest
+
+Swap the panel (`slots.Panel`) or either footer action (`slots.ApplyButton` / `slots.ClearButton`)
+while the rest of the composition — the drawer chrome, the header, the other action — stays
+exactly as-is.
+
+<Canvas of={MobileFilterDrawerStories.OverrideStructural} />
+
+## Composition, not reimplementation
+
+`MobileFilterDrawer` does not own any dialog logic itself — it's `DrawerContent side="bottom"` +
+`DrawerHeader` + `DrawerBody` (containing `FacetPanel`) + `DrawerFooter` (Apply/Clear via
+`Button`), exactly the same composition you'd write by hand:
+
+```tsx
+<Drawer open={open} onOpenChange={setOpen}>
+  <DrawerTrigger asChild><Button variant="outline">Filter</Button></DrawerTrigger>
+  <DrawerContent side="bottom">
+    <DrawerHeader><DrawerTitle>Filters</DrawerTitle></DrawerHeader>
+    <DrawerBody><FacetPanel groups={groups} /></DrawerBody>
+    <DrawerFooter>
+      <Button variant="outline" onClick={clearAll}>Clear all</Button>
+      <DrawerClose asChild><Button onClick={apply}>Apply</Button></DrawerClose>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>
+```
+
+`MobileFilterDrawer` is that composition pre-wired, with `resultCount` producing a "Show N
+results" primary-action label when you have one (falling back to plain "Apply" otherwise) and the
+Apply button closing the drawer via `DrawerClose asChild` while still firing `onApply`.
+
+## Usage
+
+```tsx
+import { useState } from "react";
+import { MobileFilterDrawer, Button, type FacetGroupData } from "@storefront/ui";
+
+function PlpMobileFilters({ groups, resultCount }: { groups: FacetGroupData[]; resultCount: number }) {
+  return (
+    <MobileFilterDrawer
+      trigger={<Button variant="outline">Filter</Button>}
+      groups={groups}
+      resultCount={resultCount}
+      onApply={() => refetchResults()}
+      onClearAll={() => clearAllFilters()}
+    />
+  );
+}
+```

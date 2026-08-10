@@ -14,4 +14,18 @@ export const productCardVariants = cva(["relative w-full overflow-hidden bg-surf
   },
 });
 
-export type ProductCardVariantsProps = VariantProps<typeof productCardVariants>;
+/** Switches the root composition between the default stacked card and a horizontal list-item row. */
+export const productCardLayoutVariants = cva(["group h-full overflow-hidden"], {
+  variants: {
+    orientation: {
+      vertical: "flex flex-col",
+      horizontal: "flex flex-row items-stretch",
+    },
+  },
+  defaultVariants: {
+    orientation: "vertical",
+  },
+});
+
+export type ProductCardVariantsProps = VariantProps<typeof productCardVariants> &
+  VariantProps<typeof productCardLayoutVariants>;

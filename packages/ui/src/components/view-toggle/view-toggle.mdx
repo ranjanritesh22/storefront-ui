@@ -1,0 +1,57 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ViewToggleStories from "./view-toggle.stories";
+
+<Meta of={ViewToggleStories} />
+
+# ViewToggle
+
+<Description of={ViewToggleStories} />
+
+<Canvas of={ViewToggleStories.Playground} />
+
+<Controls of={ViewToggleStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every view toggle at once
+
+<Canvas of={ViewToggleStories.OverrideTokens} />
+
+### 2. `viewToggleVariants` / `viewToggleButtonVariants` — style something that isn't a `ViewToggle`
+
+```tsx
+<div className={viewToggleVariants({ size: "sm" })}>...</div>
+```
+
+### 3. `classNames` — reach a specific part
+
+A slot map: `root`, `button`, `icon`.
+
+```tsx
+<ViewToggle classNames={{ button: "size-9" }} />
+```
+
+## Controlled usage
+
+<Canvas of={ViewToggleStories.Controlled} />
+
+```tsx
+const [view, setView] = useState<"grid" | "list">("grid");
+
+<ViewToggle value={view} onValueChange={setView} />
+<ProductGrid layout={view} products={products} />
+```
+
+## Keyboard interaction
+
+A hand-rolled `role="radiogroup"` of `role="radio"` buttons with roving tabindex — only the
+selected button is a tab stop; arrow keys move focus **and** commit the selection, matching
+native `<input type="radio">` group behavior:
+
+- <kbd>→</kbd>/<kbd>↓</kbd> selects the next option (wraps).
+- <kbd>←</kbd>/<kbd>↑</kbd> selects the previous option (wraps).
+- <kbd>Home</kbd>/<kbd>End</kbd> jump straight to grid/list.
+- Each button carries a real `aria-label` (`gridLabel`/`listLabel`, defaulting to "Grid view"/"List
+  view" via `getMessages()`) since it renders icon-only.

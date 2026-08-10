@@ -1,0 +1,47 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ProductBadgeStories from "./product-badge.stories";
+
+<Meta of={ProductBadgeStories} />
+
+# ProductBadge
+
+<Description of={ProductBadgeStories} />
+
+<Canvas of={ProductBadgeStories.Playground} />
+
+<Controls of={ProductBadgeStories.Playground} />
+
+## Overriding this component
+
+The same `ProductBadge`, styled two different ways — cheapest override layer first. Full model:
+[docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every badge at once
+
+Everything `Badge` already reads: `--ui-color-primary`, `--ui-color-danger`, `--ui-color-border`.
+
+### 2. `variant` — override the auto-picked colour
+
+`type` picks a sensible default `Badge` variant (`sale` → `danger`, `new` → `primary`,
+`out-of-stock` → `outline`, `custom` → `default`); pass `variant` to override it per instance.
+
+<Canvas of={ProductBadgeStories.OverrideVariant} />
+
+### 4. `slots.Badge` — replace the underlying render
+
+<Canvas of={ProductBadgeStories.OverrideStructural} />
+
+## The `type` prop
+
+`ProductBadge` never duplicates `Badge`'s rendering — it only resolves a variant and a default
+label from `type`, then renders `<Badge>` with the result:
+
+```tsx
+<ProductBadge type="sale" />
+<ProductBadge type="new" />
+<ProductBadge type="out-of-stock" />
+<ProductBadge type="custom" label="Limited edition" />
+```
+
+`label` is required for `type="custom"` (there is no dictionary default to fall back to) and is
+an optional override of the dictionary copy for the built-in types.

@@ -1,0 +1,57 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ProductCarouselStories from "./product-carousel.stories";
+
+<Meta of={ProductCarouselStories} />
+
+# ProductCarousel
+
+<Description of={ProductCarouselStories} />
+
+<Canvas of={ProductCarouselStories.Playground} />
+
+<Controls of={ProductCarouselStories.Playground} />
+
+## Overriding this component
+
+The same `ProductCarousel`, styled two different ways — cheapest override layer first. Full
+model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every rail at once
+
+Everything `ProductCard`/`Button` already read.
+
+### 2. `productCarouselTrackVariants` — the `gap` axis
+
+Controls the spacing between slides (`sm` / `md` / `lg`).
+
+### 3. `classNames` — reach a specific part
+
+<Canvas of={ProductCarouselStories.OverrideClassNames} />
+
+### 4. `slots` — replace the per-slide render
+
+<Canvas of={ProductCarouselStories.OverrideStructural} />
+
+## No carousel library
+
+The track is a plain scroll container with CSS scroll-snap (`snap-x snap-mandatory` on the
+track, `snap-start` on each slide) — native touch/trackpad scrolling for free, zero runtime
+dependency. The Prev/Next buttons and the Left/Right arrow keys (while the track has focus) page
+between slides via `scrollIntoView({ inline: "start" })`, which — unlike a manually computed
+`scrollBy` offset — respects both `prefers-reduced-motion` (smooth vs. instant) and right-to-left
+writing direction automatically.
+
+## Keyboard support
+
+The track itself is focusable (`tabIndex={0}`) and reachable independently of its slides; once
+focused, Left/Right arrow keys page between slides. Each slide's own interactive content — the
+`ProductCard`'s title link, wishlist toggle, and "Add to cart" button — remains independently
+tabbable, so keyboard users can Tab into a specific slide's controls without the carousel
+intercepting focus.
+
+## `ProductSummary[]`, not a backend type
+
+`items` is typed `ProductSummary[]` — the same domain-agnostic shape `ProductCard` and
+`ProductGrid` accept — because the default per-slide render is a `ProductCard`. Override the
+`Item` slot to render something else entirely; see `product-card.mdx` for the `ProductSummary`
+adapter pattern.

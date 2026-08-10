@@ -1,0 +1,53 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as StockIndicatorStories from "./stock-indicator.stories";
+
+<Meta of={StockIndicatorStories} />
+
+# StockIndicator
+
+<Description of={StockIndicatorStories} />
+
+<Canvas of={StockIndicatorStories.Playground} />
+
+<Controls of={StockIndicatorStories.Playground} />
+
+## Overriding this component
+
+The same `StockIndicator`, styled two different ways — cheapest override layer first. Full
+model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every indicator at once
+
+`--ui-color-success`, `--ui-color-warning`, `--ui-color-danger` are the only colours this
+component reads.
+
+### 2. `stockIndicatorVariants` / `stockIndicatorDotVariants` — style something that isn't a `StockIndicator`
+
+```tsx
+<span className={stockIndicatorDotVariants({ status: "low-stock" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+A slot map: `root`, `indicator`, `label`.
+
+<Canvas of={StockIndicatorStories.OverrideClassNames} />
+
+### 4. `slots` — replace the dot
+
+<Canvas of={StockIndicatorStories.OverrideStructural} />
+
+## Domain-agnostic props: the `product` prop
+
+`StockIndicator` accepts either an explicit `status` or a `product` prop typed as
+`ProductSummary`. `ProductSummary.inStock` resolves to `"in-stock"` / `"out-of-stock"` — there
+is no low-stock signal on the domain-agnostic product shape, so pass `status="low-stock"`
+explicitly for that case. An explicit `status` always wins over the resolved value:
+
+```tsx
+import type { ProductSummary } from "@storefront/ui";
+
+declare const product: ProductSummary;
+
+<StockIndicator product={product} />;
+```

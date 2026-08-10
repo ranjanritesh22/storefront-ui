@@ -1,0 +1,102 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as SearchBoxStories from "./search-box.stories";
+
+<Meta of={SearchBoxStories} />
+
+# SearchBox
+
+<Description of={SearchBoxStories} />
+
+<Canvas of={SearchBoxStories.Playground} />
+
+<Controls of={SearchBoxStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every search box at once
+
+<Canvas of={SearchBoxStories.OverrideTokens} />
+
+### 2. `searchBoxInputVariants` / `searchBoxContentVariants` / `searchBoxOptionVariants` — style something that isn't a `SearchBox`
+
+```tsx
+<input className={searchBoxInputVariants({ size: "sm" })} />
+```
+
+### 3. `classNames` — reach a specific part
+
+```tsx
+<SearchBox suggestions={results} classNames={{ option: "py-2" }} />
+```
+
+## No data fetching — this is a fully controlled component
+
+Consistent with this package's non-goals (no data fetching, no backend types — see
+ARCHITECTURE.md §1), `SearchBox` never calls a network API itself. It debounces keystrokes and
+hands you the query text through `onQueryChange`; you own `suggestions` / `loading` /
+`recentSearches` as state and feed the results back in:
+
+```tsx
+function ProductSearch() {
+  const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [recent, setRecent] = useState<string[]>(loadRecentSearches());
+
+  return (
+    <SearchBox
+      aria-label="Search products"
+      suggestions={suggestions}
+      loading={loading}
+      recentSearches={recent}
+      onQueryChange={async (query) => {
+        if (!query) return setSuggestions([]);
+        setLoading(true);
+        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        setSuggestions(await response.json());
+        setLoading(false);
+      }}
+      onSuggestionSelect={(suggestion) => router.push(suggestion.id)}
+      onSearch={(query) => {
+        setRecent((current) => [query, ...current.filter((q) => q !== query)].slice(0, 5));
+        router.push(`/search?q=${encodeURIComponent(query)}`);
+      }}
+      onRecentSearchRemove={(query) => setRecent((current) => current.filter((q) => q !== query))}
+      onRecentSearchesClear={() => setRecent([])}
+    />
+  );
+}
+```
+
+`debounceMs` (default `300`) controls how long `SearchBox` waits after the last keystroke before
+calling `onQueryChange` — tune it to your backend's latency budget.
+
+## Recent searches vs. suggestions
+
+The dropdown shows exactly one of two mutually-exclusive sections:
+
+- **Recent searches** (`recentSearches`, a plain `string[]`) — shown while the input is empty and
+  focused. Each item has an optional remove button (shown when `onRecentSearchRemove` is given)
+  and the whole list has an optional "Clear all" action (shown when `onRecentSearchesClear` is
+  given).
+- **Suggestions** (`suggestions`, `{ id, label, imageSrc? }[]`) — shown once the query is
+  non-empty. `SearchBox` never filters this list itself; it renders exactly what you pass.
+
+## Keyboard interaction
+
+Forked from `Combobox`'s WAI-ARIA APG "Combobox with List Autocomplete" pattern — DOM focus
+never leaves the input; keyboard "focus" moves virtually via `aria-activedescendant`:
+
+- <kbd>↓</kbd>/<kbd>↑</kbd> move across whichever section is currently visible (recent searches
+  or suggestions), wrapping at the ends.
+- <kbd>Enter</kbd> selects the highlighted item; with nothing highlighted it submits the raw
+  query text via `onSearch`.
+- <kbd>Escape</kbd> closes the dropdown.
+- A visually-hidden `role="status"` live region announces the result count or the loading state.
+
+## Loading state
+
+Pass `loading` while your `onQueryChange` handler's fetch is in flight — the trailing icon shows
+a spinner and, if no suggestions have arrived yet, the dropdown shows a "searching" row instead
+of the empty-results message.

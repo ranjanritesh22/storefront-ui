@@ -32,6 +32,9 @@ export interface StorefrontMessages {
     addToCart: string;
     addToWishlist: string;
     removeFromWishlist: string;
+    quickView: string;
+    /** aria-label on a variant swatch button. Receives the swatch's own label, e.g. "Red". */
+    selectSwatch: (swatchLabel: string) => string;
     colorsCount: (count: number) => string;
   };
   quantityStepper: {
@@ -170,6 +173,118 @@ export interface StorefrontMessages {
     /** Default link text when no `children` is given. */
     label: string;
   };
+  productGrid: {
+    /** Default `EmptyState` title when `items` is empty. */
+    emptyTitle: string;
+    /** Default `EmptyState` description when `items` is empty. */
+    emptyDescription: string;
+  };
+  searchBox: {
+    placeholder: string;
+    /** aria-label on the leading submit-search icon button. */
+    submit: string;
+    /** Shown/announced while the consumer-controlled `loading` prop is true. */
+    loading: string;
+    /** Rendered when the query is non-empty and `suggestions` is empty. */
+    noResults: string;
+    /** Announced (live region) as the suggestion count changes. */
+    resultsCount: (count: number) => string;
+    /** Heading text above the recent-searches list. */
+    recentSearchesLabel: string;
+    /** Label on the "clear all recent searches" button. */
+    clearRecentSearches: string;
+    /** aria-label on a single recent search's remove button. Receives the search text. */
+    removeRecentSearch: (query: string) => string;
+  };
+  sortSelect: {
+    /** Default visible label / aria-label / placeholder text ("Sort by"). */
+    label: string;
+    placeholder: string;
+  };
+  viewToggle: {
+    /** aria-label on the radiogroup. */
+    label: string;
+    /** aria-label on the grid-view button (icon-only). */
+    gridView: string;
+    /** aria-label on the list-view button (icon-only). */
+    listView: string;
+  };
+  resultsSummary: {
+    showing: (args: { start: number; end: number; total: number }) => string;
+    /** Shown when `total` is 0. */
+    noResults: string;
+  };
+  ratingStars: {
+    /** aria-label on the interactive radiogroup. */
+    groupLabel: string;
+    /** aria-label on a single interactive star. */
+    starLabel: (args: { star: number; max: number }) => string;
+    /** aria-label on the read-only role="img" display. */
+    readOnlyLabel: (args: { value: number; max: number }) => string;
+  };
+  facetGroup: {
+    /** Label on the "show more" toggle when some options are hidden. */
+    showMore: (remainingCount: number) => string;
+    /** Label on the toggle once every option is shown. */
+    showLess: string;
+  };
+  facetPanel: {
+    /** Label on the header's "clear all" action — shown only when `onClearAll` is given. */
+    clearAll: string;
+  };
+  activeFilters: {
+    /** aria-label on the chip list container. */
+    label: string;
+    /** aria-label on a chip's remove button. Receives the chip's label. */
+    remove: (label: string) => string;
+    /** Label on the "clear all" action. */
+    clearAll: string;
+  };
+  mobileFilterDrawer: {
+    /** DrawerTitle text when no `title` prop is given. */
+    title: string;
+    /** Label on the footer's "clear all" action. */
+    clearAll: string;
+    /** Label on the footer's primary action. Receives `resultCount` when given, e.g. "Show 128 results" vs. plain "Apply". */
+    apply: (resultCount: number | undefined) => string;
+  };
+  stockIndicator: {
+    inStock: string;
+    lowStock: string;
+    outOfStock: string;
+  };
+  productBadge: {
+    sale: string;
+    new: string;
+    outOfStock: string;
+  };
+  categoryCard: {
+    /** Renders "N products" under the title. Receives the product count. */
+    productCount: (count: number) => string;
+    /** Default CTA label. */
+    shopNow: string;
+  };
+  promoBanner: {
+    /** Default CTA label. */
+    cta: string;
+  };
+  compareBar: {
+    /** aria-label on the bar's `role="region"` root. */
+    region: string;
+    /** aria-label on an item's remove button. Receives the item's label. */
+    remove: (label: string) => string;
+    clearAll: string;
+    /** Default compare button label. Receives the selected item count. */
+    compare: (count: number) => string;
+  };
+  productCarousel: {
+    /** aria-label on the Prev button. */
+    previous: string;
+    /** aria-label on the Next button. */
+    next: string;
+    /** aria-label on the track when no `title` is given. */
+    label: string;
+  };
 }
 
 export const defaultMessages: StorefrontMessages = {
@@ -189,6 +304,8 @@ export const defaultMessages: StorefrontMessages = {
     addToCart: "Add to cart",
     addToWishlist: "Add to wishlist",
     removeFromWishlist: "Remove from wishlist",
+    quickView: "Quick view",
+    selectSwatch: (swatchLabel) => `Select ${swatchLabel}`,
     colorsCount: (count) => `${count} ${count === 1 ? "color" : "colors"}`,
   },
   quantityStepper: {
@@ -286,6 +403,83 @@ export const defaultMessages: StorefrontMessages = {
   },
   skipLink: {
     label: "Skip to main content",
+  },
+  productGrid: {
+    emptyTitle: "No products found",
+    emptyDescription: "Try adjusting your filters or search terms.",
+  },
+  searchBox: {
+    placeholder: "Search",
+    submit: "Search",
+    loading: "Searching…",
+    noResults: "No results found",
+    resultsCount: (count) => `${count} ${count === 1 ? "result" : "results"} available`,
+    recentSearchesLabel: "Recent searches",
+    clearRecentSearches: "Clear all",
+    removeRecentSearch: (query) => `Remove ${query} from recent searches`,
+  },
+  sortSelect: {
+    label: "Sort by",
+    placeholder: "Sort by",
+  },
+  viewToggle: {
+    label: "View",
+    gridView: "Grid view",
+    listView: "List view",
+  },
+  resultsSummary: {
+    showing: ({ start, end, total }) => `Showing ${start}–${end} of ${total}`,
+    noResults: "No results",
+  },
+  ratingStars: {
+    groupLabel: "Rating",
+    starLabel: ({ star, max }) => `Rate ${star} out of ${max} stars`,
+    readOnlyLabel: ({ value, max }) => `Rated ${value} out of ${max} stars`,
+  },
+  facetGroup: {
+    showMore: (remainingCount) => `Show ${remainingCount} more`,
+    showLess: "Show less",
+  },
+  facetPanel: {
+    clearAll: "Clear all",
+  },
+  activeFilters: {
+    label: "Active filters",
+    remove: (label) => `Remove ${label} filter`,
+    clearAll: "Clear all",
+  },
+  mobileFilterDrawer: {
+    title: "Filters",
+    clearAll: "Clear all",
+    apply: (resultCount) => (typeof resultCount === "number" ? `Show ${resultCount} results` : "Apply"),
+  },
+  stockIndicator: {
+    inStock: "In stock",
+    lowStock: "Low stock",
+    outOfStock: "Out of stock",
+  },
+  productBadge: {
+    sale: "Sale",
+    new: "New",
+    outOfStock: "Out of stock",
+  },
+  categoryCard: {
+    productCount: (count) => `${count} ${count === 1 ? "product" : "products"}`,
+    shopNow: "Shop now",
+  },
+  promoBanner: {
+    cta: "Shop now",
+  },
+  compareBar: {
+    region: "Compare products",
+    remove: (label) => `Remove ${label} from compare`,
+    clearAll: "Clear all",
+    compare: (count) => `Compare (${count})`,
+  },
+  productCarousel: {
+    previous: "Previous slide",
+    next: "Next slide",
+    label: "Product carousel",
   },
 };
 

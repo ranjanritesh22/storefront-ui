@@ -1,0 +1,83 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as FacetPanelStories from "./facet-panel.stories";
+
+<Meta of={FacetPanelStories} />
+
+# FacetPanel
+
+<Description of={FacetPanelStories} />
+
+<Canvas of={FacetPanelStories.Playground} />
+
+<Controls of={FacetPanelStories.Playground} />
+
+## Loading state
+
+<Canvas of={FacetPanelStories.Loading} />
+
+`FacetPanelSkeleton` mirrors the panel's layout (a heading-sized bar plus a few option-sized bars
+per group) — render it while your facet response is in flight, then swap to `FacetPanel` once the
+data arrives, the same way `ErrorState`/`EmptyState` sit alongside a "loaded" component rather
+than being a `loading` prop on it.
+
+## Overriding this component
+
+The same `FacetPanel`, styled three different ways — cheapest override layer first. Full model:
+[docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens
+
+Everything `FacetGroup` and `Button` already read.
+
+### 2. `facetPanelVariants`
+
+Exported publicly (the root layout).
+
+### 3. `classNames` — reach a specific part
+
+A slot map: `root`, `header`, `heading`, `group`, `clearAllButton`.
+
+<Canvas of={FacetPanelStories.OverrideClassNames} />
+
+### 4. `slots` — replace one part, keep the rest
+
+Swap the group renderer (`slots.Group`) or the "clear all" action (`slots.ClearAllButton`) while
+the rest of the composition stays exactly as-is.
+
+<Canvas of={FacetPanelStories.OverrideStructural} />
+
+## Data shape and adapters
+
+`FacetPanel` takes a plain `groups: FacetGroupData[]` array — `FacetGroupData` is `FacetGroup`'s
+own prop shape minus the styling-only props (`classNames`, `slots`, `className`), so wiring one
+group's state is identical whether you use `FacetGroup` directly or through `FacetPanel`:
+
+```tsx
+import { useState } from "react";
+import { FacetPanel, type FacetGroupData } from "@storefront/ui";
+
+function usePlpFacets(facetsFromSearchApi: SearchApiFacet[]) {
+  // Adapter: map your search/commerce backend's facet response onto FacetGroupData once,
+  // in your own code — this package never owns that mapping (see CLAUDE.md's
+  // "Domain-agnostic props" rule and product-card.mdx's adapter example).
+  return facetsFromSearchApi.map(
+    (facet): FacetGroupData => ({
+      id: facet.code,
+      label: facet.name,
+      variant: facet.type === "COLOR" ? "color-swatch" : "checkbox",
+      options: facet.values.map((value) => ({
+        value: value.code,
+        label: value.name,
+        count: value.count,
+        colorValue: value.colorHex,
+      })),
+      selectedValues: facet.values.filter((v) => v.selected).map((v) => v.code),
+    }),
+  );
+}
+
+function Sidebar({ facetsFromSearchApi }: { facetsFromSearchApi: SearchApiFacet[] }) {
+  const [groups, setGroups] = useState(() => usePlpFacets(facetsFromSearchApi));
+  return <FacetPanel groups={groups} heading="Filters" onClearAll={() => setGroups((gs) => gs.map((g) => ({ ...g, selectedValues: [] })))} />;
+}
+```

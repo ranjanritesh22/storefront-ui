@@ -1,0 +1,30 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ProductGridStories from "./product-grid.stories";
+
+<Meta of={ProductGridStories} />
+
+# ProductGrid
+
+<Description of={ProductGridStories} />
+
+<Canvas of={ProductGridStories.Playground} />
+
+<Controls of={ProductGridStories.Playground} />
+
+## Loading and empty states
+
+Pass `loading` while a request is in flight — `ProductGrid` renders `loadingCount`
+`ProductCardSkeleton`s in the same grid, so nothing reflows when real data arrives.
+
+<Canvas of={ProductGridStories.Loading} />
+
+When `items` is empty and `loading` is false, `ProductGrid` renders an `EmptyState` instead of an
+empty grid — override its copy with `emptyTitle` / `emptyDescription`, or add an `emptyAction`
+(typically a "Clear filters" `Button`).
+
+<Canvas of={ProductGridStories.EmptyWithAction} />
+
+## Switching to list view
+
+`ProductGrid` only lays cards out in a grid — it doesn't own the grid/list toggle itself (see
+`ViewToggle`). To render the same `items` as rows, pass `slots={{ Item: ProductListItem }}`.

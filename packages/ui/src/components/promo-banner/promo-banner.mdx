@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as PromoBannerStories from "./promo-banner.stories";
+
+<Meta of={PromoBannerStories} />
+
+# PromoBanner
+
+<Description of={PromoBannerStories} />
+
+<Canvas of={PromoBannerStories.Playground} />
+
+<Controls of={PromoBannerStories.Playground} />
+
+## Overriding this component
+
+The same `PromoBanner`, styled three different ways — cheapest override layer first. Full
+model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every banner at once
+
+<Canvas of={PromoBannerStories.OverrideTokens} />
+
+### 2. `promoBannerVariants` — the `tone` axis
+
+`tone="inverted"` flips the palette to `bg-foreground text-surface` — the same deliberate
+palette inversion documented on `Tooltip`'s content surface — for a banner that needs to read as
+a strong marketing moment against arbitrary page background.
+
+### 3. `classNames` — reach a specific part
+
+A slot map: `root`, `image`, `overlay`, `content`, `heading`, `description`, `cta`.
+
+<Canvas of={PromoBannerStories.OverrideClassNames} />
+
+### 4. `slots` — replace one part, keep the rest
+
+<Canvas of={PromoBannerStories.OverrideStructural} />
+
+## Background image and the scrim
+
+When `imageSrc` is given, `PromoBanner` renders it full-bleed behind the content via `<Image>`
+(never a raw `<img>`), plus a `bg-overlay` scrim so the heading/description stay legible over
+arbitrary photography regardless of `tone`.
+
+## CTA: button vs. link
+
+Pass `onCtaClick` for an in-page action, or `href` to render the CTA as a link — `PromoBanner`
+doesn't add its own `asChild` prop; it forwards to the `Cta` slot's own `asChild` support
+(`Button` already has it), the same pattern `ProductCard` uses for its CTA.

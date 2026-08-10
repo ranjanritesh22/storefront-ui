@@ -30,4 +30,14 @@ export interface ProductSummary {
   };
   colorsCount?: number;
   inStock?: boolean;
+  /** Selectable variants (e.g. colors), rendered as swatches. */
+  swatches?: ProductSwatch[];
+}
+
+export interface ProductSwatch {
+  id: string;
+  label: string;
+  /** CSS color value from the product's own data, e.g. `"#1d4ed8"` — not one of this package's design tokens. */
+  color?: string;
+  imageSrc?: string;
 }

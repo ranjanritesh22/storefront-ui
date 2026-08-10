@@ -1,0 +1,70 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as SortSelectStories from "./sort-select.stories";
+
+<Meta of={SortSelectStories} />
+
+# SortSelect
+
+<Description of={SortSelectStories} />
+
+<Canvas of={SortSelectStories.Playground} />
+
+<Controls of={SortSelectStories.Playground} />
+
+## Overriding this component
+
+Full model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every sort select at once
+
+Everything `Select` already reads.
+
+<Canvas of={SortSelectStories.OverrideTokens} />
+
+### 2. `sortSelectVariants` — the optional visible label's size
+
+```tsx
+<span className={sortSelectVariants({ size: "sm" })}>Sort by</span>
+```
+
+The trigger itself is sized by `Select`'s own `selectVariants` (also exported from
+`@storefront/ui`) — `SortSelect` forwards its `size` prop straight through.
+
+### 3. `classNames` — reach a specific part
+
+`SortSelect` adds `root` (the wrapper) and `label` (the optional visible label), and forwards
+every other key straight to the composed `Select` (`trigger`, `value`, `icon`, `content`,
+`viewport`, `item`, `group`, `groupLabel`):
+
+```tsx
+<SortSelect options={sortOptions} classNames={{ trigger: "w-48" }} />
+```
+
+## Why a wrapper instead of using `Select` directly
+
+`SortSelect` exists for two small, recurring PLP-specific defaults so every sort control in a
+storefront doesn't have to repeat them: a domain-flavored default placeholder/aria-label
+("Sort by" instead of the generic "Select an option"), and an optional visible label
+(`showLabel`) for layouts that put the control in a filter bar rather than a bare toolbar. It
+composes `Select` internally rather than re-wiring Radix Select — see CLAUDE.md's rule against
+reimplementing a primitive another component in this package already owns correctly.
+
+```tsx
+<SortSelect
+  aria-label="Sort by"
+  value={sort}
+  onValueChange={setSort}
+  options={[
+    { value: "relevance", label: "Relevance" },
+    { value: "price-asc", label: "Price: low to high" },
+  ]}
+/>
+```
+
+## With a visible label
+
+<Canvas of={SortSelectStories.WithVisibleLabel} />
+
+When `showLabel` is set, the visible `<label>` supplies the trigger's accessible name via
+`htmlFor`/`id` — `SortSelect` does not also set a redundant `aria-label` in that case. Pass an
+explicit `aria-label` yourself to override either default.

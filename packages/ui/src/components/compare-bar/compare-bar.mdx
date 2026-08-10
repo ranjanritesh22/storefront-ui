@@ -1,0 +1,54 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as CompareBarStories from "./compare-bar.stories";
+
+<Meta of={CompareBarStories} />
+
+# CompareBar
+
+<Description of={CompareBarStories} />
+
+<Canvas of={CompareBarStories.Playground} />
+
+<Controls of={CompareBarStories.Playground} />
+
+## Overriding this component
+
+The same `CompareBar`, styled two different ways — cheapest override layer first. Full model:
+[docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every bar at once
+
+`--ui-color-border`, `--ui-color-surface`, and the `--ui-z-sticky` z-index step.
+
+### 2. `compareBarVariants` — style something that isn't a `CompareBar`
+
+```tsx
+<div className={compareBarVariants()}>...</div>
+```
+
+### 3. `classNames` — reach a specific part
+
+<Canvas of={CompareBarStories.OverrideClassNames} />
+
+### 4. `slots` — replace one part, keep the rest
+
+<Canvas of={CompareBarStories.OverrideStructural} />
+
+## Visibility is the consumer's responsibility
+
+`CompareBar` always receives the full `items` array and returns `null` when it's empty — it does
+not track its own open/closed state. Drive it from wherever you're tracking "selected for
+comparison" (component state, a store, a query param):
+
+<Canvas of={CompareBarStories.Interactive} />
+
+```tsx
+const [items, setItems] = useState<CompareBarItem[]>([]);
+
+<CompareBar
+  items={items}
+  onRemoveItem={(id) => setItems((current) => current.filter((item) => item.id !== id))}
+  onClearAll={() => setItems([])}
+  onCompare={() => router.push(`/compare?ids=${items.map((item) => item.id).join(",")}`)}
+/>;
+```

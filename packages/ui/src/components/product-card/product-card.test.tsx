@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ProductCard } from "./product-card";
+import { ProductCard, ProductCardSkeleton } from "./product-card";
 import { Badge } from "../badge/badge";
 import { configureMessages, resetMessages } from "../../i18n/messages";
 import type { ProductSummary } from "../../types/product";
@@ -192,5 +192,95 @@ describe("ProductCard", () => {
     );
     await user.click(screen.getByLabelText("Add to wishlist"));
     expect(onWishlistToggle).toHaveBeenCalledTimes(1);
+  });
+
+  it("shows the quick-view action only when onQuickView is given, and forwards clicks", async () => {
+    const user = userEvent.setup();
+    const onQuickView = vi.fn();
+    const { rerender } = render(
+      <ProductCard title="Mug" imageSrc="/img.jpg" imageAlt="Mug" price={9.99} />,
+    );
+    expect(screen.queryByRole("button", { name: "Quick view" })).not.toBeInTheDocument();
+
+    rerender(
+      <ProductCard
+        title="Mug"
+        imageSrc="/img.jpg"
+        imageAlt="Mug"
+        price={9.99}
+        onQuickView={onQuickView}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "Quick view" }));
+    expect(onQuickView).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders swatches only when given and reports the selected id on click", async () => {
+    const user = userEvent.setup();
+    const onSwatchSelect = vi.fn();
+    const { rerender } = render(
+      <ProductCard title="Mug" imageSrc="/img.jpg" imageAlt="Mug" price={9.99} />,
+    );
+    expect(screen.queryByLabelText("Select Red")).not.toBeInTheDocument();
+
+    rerender(
+      <ProductCard
+        title="Mug"
+        imageSrc="/img.jpg"
+        imageAlt="Mug"
+        price={9.99}
+        swatches={[
+          { id: "red", label: "Red", color: "#c00" },
+          { id: "blue", label: "Blue", color: "#00c" },
+        ]}
+        selectedSwatchId="red"
+        onSwatchSelect={onSwatchSelect}
+      />,
+    );
+    expect(screen.getByLabelText("Select Red")).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByLabelText("Select Blue")).toHaveAttribute("aria-pressed", "false");
+    await user.click(screen.getByLabelText("Select Blue"));
+    expect(onSwatchSelect).toHaveBeenCalledWith("blue");
+  });
+
+  it("switches to a horizontal list-item layout via orientation", () => {
+    render(
+      <ProductCard
+        title="Mug"
+        imageSrc="/img.jpg"
+        imageAlt="Mug"
+        price={9.99}
+        orientation="horizontal"
+      />,
+    );
+    expect(screen.getByText("Mug").closest("[data-orientation]")).toHaveAttribute(
+      "data-orientation",
+      "horizontal",
+    );
+  });
+
+  it("resolves swatches from the domain-agnostic product prop", () => {
+    const product: ProductSummary = {
+      id: "sku-1",
+      name: "Shoe",
+      price: 49.99,
+      image: { src: "/img.jpg", alt: "Shoe" },
+      swatches: [{ id: "green", label: "Green", color: "#0a0" }],
+    };
+    render(<ProductCard product={product} />);
+    expect(screen.getByLabelText("Select Green")).toBeInTheDocument();
+  });
+});
+
+describe("ProductCardSkeleton", () => {
+  it("renders decorative placeholders with no accessible content", () => {
+    const { container } = render(<ProductCardSkeleton />);
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    expect(container.querySelectorAll('[aria-hidden="true"]').length).toBeGreaterThan(0);
+  });
+
+  it("matches the horizontal orientation layout", () => {
+    const { container } = render(<ProductCardSkeleton orientation="horizontal" />);
+    expect(container.querySelector('[data-orientation="horizontal"]')).toBeInTheDocument();
   });
 });

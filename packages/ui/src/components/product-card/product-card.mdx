@@ -23,14 +23,23 @@ under `[data-theme]` / `[data-brand]`.
 
 <Canvas of={ProductCardStories.OverrideTokens} />
 
-### 2. `productCardVariants` — the image aspect ratio
+### 2. `productCardVariants` / `productCardLayoutVariants`
 
-Controls the one visually variable part of the layout (`square` / `portrait` / `landscape`).
+`productCardVariants` controls the image aspect ratio (`square` / `portrait` / `landscape`).
+`orientation` (`vertical` / `horizontal`) switches the whole card between the default stacked
+layout and a horizontal list-item row — this is what `ProductListItem` sets internally.
 
 ### 3. `classNames` — reach a specific part
 
 A slot map: `root`, `image`, `body`, `subtitle`, `title`, `price`, `badge`, `rating`, `colors`,
-`wishlist`, `cta`.
+`wishlist`, `quickView`, `swatches`, `swatch`, `cta`.
+
+### Quick view, wishlist, and variant swatches
+
+The wishlist toggle shows only when `onWishlistToggle` is given; the quick-view action (in
+vertical layout only — it would overlap the content column in horizontal/list layout) shows only
+when `onQuickView` is given; the swatch row shows only when `swatches` (or `product.swatches`) is
+non-empty. Each is opt-in by prop presence, matching the CTA and badge.
 
 <Canvas of={ProductCardStories.OverrideClassNames} />
 

@@ -1,0 +1,22 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ProductListItemStories from "./product-list-item.stories";
+
+<Meta of={ProductListItemStories} />
+
+# ProductListItem
+
+<Description of={ProductListItemStories} />
+
+<Canvas of={ProductListItemStories.Playground} />
+
+<Controls of={ProductListItemStories.Playground} />
+
+## When to use this vs. `ProductCard`
+
+Use `ProductCard` (default, vertical orientation) in a `ProductGrid`. Use `ProductListItem` in a
+`ProductGrid` switched to list view (see `ViewToggle`), a search-results list, or any other
+stacked-row context. Both accept the same `product` / individual props, `classNames`, and
+`slots` — `ProductListItem` only fixes `orientation="horizontal"` and adds a `size` variant for
+the image column width.
+
+<Canvas of={ProductListItemStories.ListOfItems} />

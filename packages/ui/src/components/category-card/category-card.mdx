@@ -1,0 +1,54 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as CategoryCardStories from "./category-card.stories";
+
+<Meta of={CategoryCardStories} />
+
+# CategoryCard
+
+<Description of={CategoryCardStories} />
+
+<Canvas of={CategoryCardStories.Playground} />
+
+<Controls of={CategoryCardStories.Playground} />
+
+## Overriding this component
+
+The same `CategoryCard`, styled three different ways — cheapest override layer first. Full
+model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens — rebrand every card at once
+
+Everything `Card` / `Button` already read — override on `:root` or scoped under `[data-theme]` /
+`[data-brand]`.
+
+<Canvas of={CategoryCardStories.OverrideTokens} />
+
+### 2. `categoryCardVariants` — the image aspect ratio
+
+Controls the one visually variable part of the layout (`square` / `portrait` / `landscape`,
+defaulting to `landscape` since category tiles usually read wider than product tiles).
+
+### 3. `classNames` — reach a specific part
+
+A slot map: `root`, `image`, `body`, `title`, `count`, `cta`.
+
+<Canvas of={CategoryCardStories.OverrideClassNames} />
+
+### 4. `slots` — replace one part, keep the rest
+
+<Canvas of={CategoryCardStories.OverrideStructural} />
+
+## Domain-agnostic props
+
+`CategoryCard` takes plain props — `title`, `image` (or `imageSrc`/`imageAlt`), `href`,
+`productCount` — no backend/commerce category type. Map your API's category response onto these
+once, in your own code, the same way `product-card.mdx` documents for `ProductSummary`:
+
+```tsx
+<CategoryCard
+  title={category.name}
+  image={{ src: category.imageUrl, alt: category.name }}
+  href={`/c/${category.slug}`}
+  productCount={category.productCount}
+/>
+```

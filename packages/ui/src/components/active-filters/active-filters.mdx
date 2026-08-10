@@ -1,0 +1,82 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as ActiveFiltersStories from "./active-filters.stories";
+
+<Meta of={ActiveFiltersStories} />
+
+# ActiveFilters
+
+<Description of={ActiveFiltersStories} />
+
+<Canvas of={ActiveFiltersStories.Playground} />
+
+<Controls of={ActiveFiltersStories.Playground} />
+
+<Canvas of={ActiveFiltersStories.Empty} />
+
+<Canvas of={ActiveFiltersStories.NoClearAll} />
+
+## Overriding this component
+
+The same `ActiveFilters`, styled three different ways — cheapest override layer first. Full
+model: [docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens
+
+`--ui-color-border`, `--ui-color-surface-raised`, `--ui-color-foreground`, `--ui-color-foreground-muted`.
+
+### 2. `activeFiltersVariants` / `activeFiltersChipVariants` / `activeFiltersRemoveButtonVariants`
+
+Exported publicly.
+
+### 3. `classNames` — reach a specific part
+
+A slot map: `root`, `chip`, `chipLabel`, `removeButton`, `clearAllButton`.
+
+<Canvas of={ActiveFiltersStories.OverrideClassNames} />
+
+### 4. `slots` — replace one part, keep the rest
+
+<Canvas of={ActiveFiltersStories.OverrideStructural} />
+
+## Usage
+
+`filters` is a minimal, domain-agnostic shape (`id`, `label`) — derive it from whatever facet
+state you're already tracking for `FacetPanel`/`FacetGroup`:
+
+```tsx
+import { useState } from "react";
+import { ActiveFilters, FacetPanel, type ActiveFilter, type FacetGroupData } from "@storefront/ui";
+
+function Plp({ groups }: { groups: FacetGroupData[] }) {
+  const [state, setState] = useState(groups);
+
+  const activeFilters: ActiveFilter[] = state.flatMap((group) =>
+    (group.selectedValues ?? []).map((value) => ({
+      id: `${group.id}:${value}`,
+      label: `${group.label}: ${group.options?.find((o) => o.value === value)?.label ?? value}`,
+    })),
+  );
+
+  function removeFilter(id: string) {
+    const [groupId, value] = id.split(":");
+    setState((prev) =>
+      prev.map((group) =>
+        group.id === groupId
+          ? { ...group, selectedValues: (group.selectedValues ?? []).filter((v) => v !== value) }
+          : group,
+      ),
+    );
+  }
+
+  return (
+    <>
+      <ActiveFilters filters={activeFilters} onRemove={removeFilter} onClearAll={() => setState(groups)} />
+      <FacetPanel groups={state} />
+    </>
+  );
+}
+```
+
+Each chip's remove button always carries a real `aria-label` (e.g. "Remove Size: M filter") —
+never an icon alone — via `t.activeFilters.remove(label)`, overridable per-instance with
+`removeLabel`.

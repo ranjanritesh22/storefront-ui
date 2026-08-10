@@ -10,7 +10,7 @@ export type { ConfigureStorefrontUIOptions } from "./config";
 export { configureMessages, resetMessages, getMessages, defaultMessages } from "./i18n/messages";
 export type { StorefrontMessages } from "./i18n/messages";
 
-export type { ProductSummary } from "./types/product";
+export type { ProductSummary, ProductSwatch } from "./types/product";
 
 export { useQuantity } from "./hooks/use-quantity";
 export type { UseQuantityOptions, UseQuantityResult } from "./hooks/use-quantity";
@@ -93,14 +93,34 @@ export type {
   DialogContentVariantsProps,
 } from "./components/dialog";
 
-export { ProductCard, productCardVariants } from "./components/product-card";
+export {
+  ProductCard,
+  ProductCardSkeleton,
+  productCardVariants,
+  productCardLayoutVariants,
+} from "./components/product-card";
 export type {
   ProductCardProps,
   ProductCardClassNames,
   ProductCardSlots,
   ProductCardImageProps,
+  ProductCardSkeletonProps,
   ProductCardVariantsProps,
 } from "./components/product-card";
+
+export { ProductListItem, productListItemVariants } from "./components/product-list-item";
+export type {
+  ProductListItemProps,
+  ProductListItemVariantsProps,
+} from "./components/product-list-item";
+
+export { ProductGrid, productGridVariants } from "./components/product-grid";
+export type {
+  ProductGridProps,
+  ProductGridClassNames,
+  ProductGridSlots,
+  ProductGridVariantsProps,
+} from "./components/product-grid";
 
 export { Checkbox, checkboxVariants, checkboxBoxVariants } from "./components/checkbox";
 export type {
@@ -586,3 +606,88 @@ export type {
   StoreSelectorClassNames,
   StoreSelectorVariantsProps,
 } from "./components/store-selector";
+
+// --- Product listing layer ---
+
+export { SearchBox, searchBoxInputVariants, searchBoxContentVariants, searchBoxOptionVariants, searchBoxRecentItemVariants } from "./components/search-box";
+export type { SearchBoxProps, SearchBoxClassNames, SearchSuggestion, SearchBoxVariantsProps } from "./components/search-box";
+
+export { SortSelect, sortSelectVariants } from "./components/sort-select";
+export type { SortSelectProps, SortSelectClassNames, SortOption, SortSelectVariantsProps } from "./components/sort-select";
+
+export { ViewToggle, viewToggleVariants, viewToggleButtonVariants } from "./components/view-toggle";
+export type { ViewToggleProps, ViewToggleClassNames, ViewMode, ViewToggleVariantsProps } from "./components/view-toggle";
+
+export { ResultsSummary, resultsSummaryVariants } from "./components/results-summary";
+export type { ResultsSummaryProps, ResultsSummaryClassNames, ResultsSummaryVariantsProps } from "./components/results-summary";
+
+export { RatingStars, ratingStarsVariants, ratingStarButtonVariants } from "./components/rating-stars";
+export type { RatingStarsProps, RatingStarsClassNames, RatingStarsVariantsProps } from "./components/rating-stars";
+
+export { FacetGroup, facetGroupVariants, facetGroupOptionsVariants, facetGroupSwatchVariants } from "./components/facet-group";
+export type {
+  FacetGroupProps,
+  FacetGroupClassNames,
+  FacetGroupSlots,
+  FacetGroupVariant,
+  FacetOption,
+  FacetGroupVariantsProps,
+} from "./components/facet-group";
+
+export {
+  FacetPanel,
+  FacetPanelSkeleton,
+  facetPanelVariants,
+  facetPanelHeaderVariants,
+  facetPanelSkeletonVariants,
+  facetPanelSkeletonGroupVariants,
+} from "./components/facet-panel";
+export type {
+  FacetPanelProps,
+  FacetPanelClassNames,
+  FacetPanelSlots,
+  FacetGroupData,
+  FacetPanelSkeletonProps,
+  FacetPanelSkeletonClassNames,
+  FacetPanelVariantsProps,
+} from "./components/facet-panel";
+
+export {
+  ActiveFilters,
+  activeFiltersVariants,
+  activeFiltersChipVariants,
+  activeFiltersRemoveButtonVariants,
+} from "./components/active-filters";
+export type {
+  ActiveFiltersProps,
+  ActiveFiltersClassNames,
+  ActiveFiltersSlots,
+  ActiveFilter,
+  ActiveFiltersVariantsProps,
+} from "./components/active-filters";
+
+export { MobileFilterDrawer, mobileFilterDrawerBodyVariants } from "./components/mobile-filter-drawer";
+export type {
+  MobileFilterDrawerProps,
+  MobileFilterDrawerClassNames,
+  MobileFilterDrawerSlots,
+  MobileFilterDrawerVariantsProps,
+} from "./components/mobile-filter-drawer";
+
+export { StockIndicator, stockIndicatorVariants, stockIndicatorDotVariants } from "./components/stock-indicator";
+export type { StockIndicatorProps, StockIndicatorClassNames, StockIndicatorSlots, StockIndicatorVariantsProps } from "./components/stock-indicator";
+
+export { ProductBadge, productBadgeVariants } from "./components/product-badge";
+export type { ProductBadgeProps, ProductBadgeType, ProductBadgeClassNames, ProductBadgeSlots, ProductBadgeVariantsProps } from "./components/product-badge";
+
+export { CategoryCard, categoryCardVariants } from "./components/category-card";
+export type { CategoryCardProps, CategoryCardClassNames, CategoryCardSlots, CategoryCardImageProps, CategoryCardVariantsProps } from "./components/category-card";
+
+export { PromoBanner, promoBannerVariants } from "./components/promo-banner";
+export type { PromoBannerProps, PromoBannerClassNames, PromoBannerSlots, PromoBannerImageProps, PromoBannerVariantsProps } from "./components/promo-banner";
+
+export { CompareBar, compareBarVariants } from "./components/compare-bar";
+export type { CompareBarProps, CompareBarItem, CompareBarClassNames, CompareBarSlots, CompareBarImageProps, CompareBarVariantsProps } from "./components/compare-bar";
+
+export { ProductCarousel, productCarouselTrackVariants, productCarouselItemVariants } from "./components/product-carousel";
+export type { ProductCarouselProps, ProductCarouselClassNames, ProductCarouselSlots, ProductCarouselItemProps, ProductCarouselVariantsProps } from "./components/product-carousel";

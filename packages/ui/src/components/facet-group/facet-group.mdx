@@ -1,0 +1,90 @@
+import { Meta, Canvas, Controls, Description } from "@storybook/blocks";
+import * as FacetGroupStories from "./facet-group.stories";
+
+<Meta of={FacetGroupStories} />
+
+# FacetGroup
+
+<Description of={FacetGroupStories} />
+
+<Canvas of={FacetGroupStories.Playground} />
+
+<Controls of={FacetGroupStories.Playground} />
+
+## Variants
+
+`FacetGroup` picks its control shape from the `variant` prop — one component, five facet types:
+
+- **`checkbox`** — multi-select, e.g. Size. <Canvas of={FacetGroupStories.Playground} />
+- **`radio`** — single-select, e.g. Brand. <Canvas of={FacetGroupStories.RadioVariant} />
+- **`color-swatch`** — a grid of round toggle buttons, e.g. Color. <Canvas of={FacetGroupStories.ColorSwatchVariant} />
+- **`price-range`** — a dual-thumb `RangeSlider`, e.g. Price. <Canvas of={FacetGroupStories.PriceRangeVariant} />
+- **`rating`** — single-select star thresholds ("4 stars & up"). <Canvas of={FacetGroupStories.RatingVariant} />
+
+## Large option sets
+
+<Canvas of={FacetGroupStories.FiftyPlusOptionsShowMore} />
+
+Only the first `visibleCount` options (default `8`) render initially. "Show more" reveals the
+rest inside a `ScrollArea` with a capped height, so a 50+ value list (a real brand or size facet
+on a large catalog) never grows the page — the DOM stays bounded and every option remains
+reachable by keyboard (Tab through the list, or scroll with arrow keys inside the `ScrollArea`).
+
+## Overriding this component
+
+The same `FacetGroup`, styled three different ways — cheapest override layer first. Full model:
+[docs/overriding.md](../../../../../docs/overriding.md).
+
+### 1. Tokens
+
+Everything `Accordion`, `Checkbox`, `Radio`, `RangeSlider`, and `Rating` already read —
+`--ui-color-border`, `--ui-color-primary`, `--ui-color-foreground`, etc.
+
+### 2. `facetGroupVariants` / `facetGroupOptionsVariants` / `facetGroupSwatchVariants`
+
+Exported publicly, keyed by the same `variant` union as the component's own prop.
+
+### 3. `classNames` — reach a specific part
+
+A slot map: `root`, `trigger`, `content`, `list`, `option`, `showMoreButton`.
+
+<Canvas of={FacetGroupStories.OverrideClassNames} />
+
+### 4. `slots` — replace one part, keep the rest
+
+<Canvas of={FacetGroupStories.OverrideStructural} />
+
+## Data shape and controlled state
+
+`FacetGroup` is fully controlled — it owns no selection state itself, only the "show more" and
+(optionally) the open/closed disclosure state. Wire it to your own filter state:
+
+```tsx
+import { useState } from "react";
+import { FacetGroup, type FacetOption } from "@storefront/ui";
+
+const sizeOptions: FacetOption[] = [
+  { value: "s", label: "S", count: 22 },
+  { value: "m", label: "M", count: 41 },
+  { value: "l", label: "L", count: 30 },
+];
+
+function SizeFacet() {
+  const [selected, setSelected] = useState<string[]>([]);
+  return (
+    <FacetGroup
+      id="size"
+      label="Size"
+      variant="checkbox"
+      options={sizeOptions}
+      selectedValues={selected}
+      onSelectionChange={setSelected}
+    />
+  );
+}
+```
+
+`FacetOption` is a minimal, domain-agnostic shape (`value`, `label`, `count?`, `colorValue?`,
+`imageSrc?`, `imageAlt?`, `ratingValue?`, `disabled?`) — map your search/commerce backend's facet
+response onto it once, in your own code, the same way `ProductCard` maps onto `ProductSummary`
+(see product-card.mdx's adapter example).
